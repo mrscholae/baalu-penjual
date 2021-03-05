@@ -1,105 +1,159 @@
-<!-- modal add store  -->
-<div class="modal fade" id="addStore" tabindex="-1" role="dialog" aria-labelledby="addStoreLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- modal add toko  -->
+<div class="modal fade" id="addToko" tabindex="-1" role="dialog" aria-labelledby="addTokoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addStoreLabel">Tambah Toko</h5>
+            <h5 class="modal-title" id="addTokoLabel">Tambah Toko</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form class="user">
+            <form class="user" id="formAddToko">
                 <div class="form-group">
                     <label for="tgl_bergabung" class="col-form-label">Tgl. Bergabung</label>
-                    <input type="date" name="tgl_bergabung" class="form-control form-control-user" id="tgl_bergabung">
+                    <input type="date" name="tgl_bergabung" class="form-control form-control-user" id="tgl_bergabung_add" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko">
+                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_add" required>
                 </div>
                 <div class="form-group">
                     <label for="alamat" class="col-form-label">Alamat Toko</label>
-                    <textarea name="alamat" id="alamat" class="form-control form-control-user"></textarea>
+                    <textarea name="alamat" id="alamat_add" class="form-control form-control-user" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="pj" class="col-form-label">Penanggung Jawab</label>
-                    <input type="text" name="pj" class="form-control form-control-user" id="pj">
+                    <input type="text" name="pj" class="form-control form-control-user" id="pj_add" required>
                 </div>
                 <div class="form-group">
                     <label for="no_hp" class="col-form-label">No. Handphone</label>
-                    <input type="text" name="no_hp" class="form-control form-control-user" id="no_hp">
+                    <input type="text" name="no_hp" class="form-control form-control-user" id="no_hp_add" required>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <form action="" class="user">
                 <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-user">Simpan</button>
+                <button type="button" class="btn btn-primary btn-user" id="btnAddToko">Simpan</button>
             </form>
         </div>
         </div>
     </div>
 </div>
 
-<!-- modal add produk  -->
-<div class="modal fade" id="addProduk" tabindex="-1" role="dialog" aria-labelledby="addProdukLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- modal edit toko  -->
+<div class="modal fade" id="editToko" tabindex="-1" role="dialog" aria-labelledby="editTokoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addProdukLabel">Tambah Produk</h5>
+            <h5 class="modal-title" id="editTokoLabel">Edit Toko</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <form class="user">
+                <input type="hidden" name="id_toko" id="id_toko_edit">
                 <div class="form-group">
-                    <label for="nama_produk" class="col-form-label">Nama Produk</label>
-                    <input type="text" name="nama_produk" class="form-control form-control-user" id="nama_produk">
+                    <label for="tgl_bergabung" class="col-form-label">Tgl. Bergabung</label>
+                    <input type="date" name="tgl_bergabung" class="form-control form-control-user" id="tgl_bergabung_edit" required>
                 </div>
                 <div class="form-group">
-                    <label for="kd_produk" class="col-form-label">Kode Produk</label>
-                    <input type="text" name="kd_produk" class="form-control form-control-user" id="kd_produk">
+                    <label for="nama_toko" class="col-form-label">Nama Toko</label>
+                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="alamat" class="col-form-label">Alamat Toko</label>
+                    <textarea name="alamat" id="alamat_edit" class="form-control form-control-user" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="pj" class="col-form-label">Penanggung Jawab</label>
+                    <input type="text" name="pj" class="form-control form-control-user" id="pj_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="no_hp" class="col-form-label">No. Handphone</label>
+                    <input type="text" name="no_hp" class="form-control form-control-user" id="no_hp_edit" required>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <form action="" class="user">
                 <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-user">Simpan</button>
+                <button type="button" class="btn btn-success btn-user" id="btnEditToko">Simpan</button>
             </form>
         </div>
         </div>
     </div>
 </div>
 
-<!-- modal edit produk  -->
-<div class="modal fade" id="editProduk" tabindex="-1" role="dialog" aria-labelledby="editProdukLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- modal add barang  -->
+<div class="modal fade" id="addBarang" tabindex="-1" role="dialog" aria-labelledby="addBarangLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="editProdukLabel">Edit Produk</h5>
+            <h5 class="modal-title" id="addBarangLabel">Tambah Barang</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form class="user">
+            <form class="user" id="formAddBarang">
                 <div class="form-group">
-                    <label for="nama_produk" class="col-form-label">Nama Produk</label>
-                    <input type="text" name="nama_produk" class="form-control form-control-user" id="nama_produk" value="Marewo Bakery Cokelat">
+                    <label for="tgl_rilis" class="col-form-label">Tgl. Rilis</label>
+                    <input type="date" name="tgl_rilis" class="form-control form-control-user" id="tgl_rilis_add" required>
                 </div>
                 <div class="form-group">
-                    <label for="kd_produk" class="col-form-label">Kode Produk</label>
-                    <input type="text" name="kd_produk" class="form-control form-control-user" id="kd_produk" value="MBK">
+                    <label for="nama_barang" class="col-form-label">Nama Barang</label>
+                    <input type="text" name="nama_barang" class="form-control form-control-user" id="nama_barang_add" required>
+                </div>
+                <div class="form-group">
+                    <label for="kode_barang" class="col-form-label">Kode Barang</label>
+                    <input type="text" name="kode_barang" class="form-control form-control-user" id="kode_barang_add" required>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
             <form action="" class="user">
                 <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-user">Simpan</button>
+                <button type="button" class="btn btn-primary btn-user" id="btnAddBarang">Simpan</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal edit barang  -->
+<div class="modal fade" id="editBarang" tabindex="-1" role="dialog" aria-labelledby="editBarangLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editBarangLabel">Edit Barang</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="user">
+                <input type="hidden" name="id_barang" id="id_barang_edit">
+                <div class="form-group">
+                    <label for="tgl_rilis" class="col-form-label">Tgl. Rilis</label>
+                    <input type="date" name="tgl_rilis" class="form-control form-control-user" id="tgl_rilis_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="nama_barang" class="col-form-label">Nama Barang</label>
+                    <input type="text" name="nama_barang" class="form-control form-control-user" id="nama_barang_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="kode_barang" class="col-form-label">Kode Barang</label>
+                    <input type="text" name="kode_barang" class="form-control form-control-user" id="kode_barang_edit" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <form action="" class="user">
+                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-success btn-user" id="btnEditBarang">Simpan</button>
             </form>
         </div>
         </div>
@@ -108,7 +162,7 @@
 
 <!-- modal add pengiriman  -->
 <div class="modal fade" id="addPengiriman" tabindex="-1" role="dialog" aria-labelledby="addPengirimanLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="addPengirimanLabel">Tambah Pengiriman</h5>
@@ -117,49 +171,69 @@
             </button>
         </div>
         <div class="modal-body">
-            <form class="user">
+            <form action="" class="user">
+                <div class="form-group">
+                    <label for="nama_toko" class="col-form-label">Nama Toko</label>
+                    <input type="text" name="nama_toko" id="nama_toko_pengiriman" class="form-control form-control-user" readonly>
+                </div>
+            </form>
+            <form class="user" id="listAllBarang">
+                <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>pilih barang yang akan dikirim</div>
+                <div class="listBarang"></div>
+                <!-- <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">First and last name</span>
+                    </div>
+                    <input type="text" aria-label="First name" class="form-control">
+                </div> -->
+            </form>
+            <form class="user" id="formAddPengiriman">
+                <input type="hidden" name="id_toko" id="id_toko_pengiriman">
                 <div class="form-group">
                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
-                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman" value="<?= date('Y-m-d')?>">
+                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_add" required>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
-                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan">
+                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_add" required>
                 </div>
                 <div class="form-group">
-                    <p><b>List Pengiriman</b></p>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">MBK</span>
-                        </div>
-                        <input type="number" class="form-control" aria-label="Text input with checkbox">
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">MBC</span>
-                        </div>
-                        <input type="number" class="form-control" aria-label="Text input with checkbox">
-                    </div>
-                    
+                    <p><b>List Pengiriman Barang</b></p>
+                    <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>masukkan jumlah barang yang akan dikirim</div>
+                    <div class="listBarangPengiriman"></div>
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer justify-content-between" id="btnFormAddPengiriman">
             <form action="" class="user">
-                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-user">Simpan</button>
+                <span>
+                    <button type="button" class="btn btn-success btn-user" id="btnBarang"><i class="fa fa-arrow-left mr-1"></i> barang</button>
+                </span>
+            </form>
+            <form action="" class="user">
+                <span>
+                    <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary btn-user" id="btnAddPengiriman">Simpan</button>
+                </span>
+            </form>
+        </div>
+        <div class="modal-footer" id="btnFormKirim">
+            <form action="" class="user">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success btn-user" id="btnKirim">Kirim <i class="fa fa-arrow-right ml-1"></i></button>
+                </div>
             </form>
         </div>
         </div>
     </div>
 </div>
 
-<!-- modal add produk toko -->
-<div class="modal fade" id="addProdukToko" tabindex="-1" role="dialog" aria-labelledby="addProdukTokoLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- modal add barang toko -->
+<div class="modal fade" id="addBarangToko" tabindex="-1" role="dialog" aria-labelledby="addBarangTokoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addProdukTokoLabel">Tambah Produk Toko</h5>
+            <h5 class="modal-title" id="addBarangTokoLabel">Tambah Barang Toko</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -180,41 +254,17 @@
                     
                     <div class="card form-1">
                         <div class="card-header text-primary">
-                            <strong>Data Produk Toko</strong>
+                            <strong>Data Barang Toko</strong>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group d-flex justify-content-between">
-                                <span>1. Marewo Bakery Cokelat</span>
-                                <span><i class="fa fa-minus-circle text-danger"></i></span>
-                            </div>
-                            <div class="form-group d-flex justify-content-between">
-                                <span>2. Marewo Bakery Keju</span>
-                                <span><i class="fa fa-minus-circle text-danger"></i></span>
-                            </div>
-                            <div class="form-group d-flex justify-content-between">
-                                <span>3. Marewo Bakery Abon</span>
-                                <span><i class="fa fa-minus-circle text-danger"></i></span>
-                            </div>
+                        <div class="card-body" id="listBarangToko">
                         </div>
                     </div>
 
                     <div class="card form-2">
                         <div class="card-header text-primary">
-                            <strong>Data Produk</strong>
+                            <strong>Data Barang</strong>
                         </div>
-                        <div class="card-body">
-                            <div class="form-group d-flex justify-content-between">
-                                <span>1. Marewo Bakery Cokelat</span>
-                                <span><i class="fa fa-plus-circle text-success"></i></span>
-                            </div>
-                            <div class="form-group d-flex justify-content-between">
-                                <span>2. Marewo Bakery Keju</span>
-                                <span><i class="fa fa-plus-circle text-success"></i></span>
-                            </div>
-                            <div class="form-group d-flex justify-content-between">
-                                <span>3. Marewo Bakery Abon</span>
-                                <span><i class="fa fa-plus-circle text-success"></i></span>
-                            </div>
+                        <div class="card-body" id="listBarang">
                         </div>
                     </div>
 
@@ -232,42 +282,42 @@
 
 <!-- modal add pengambilan -->
 <div class="modal fade" id="addPengambilan" tabindex="-1" role="dialog" aria-labelledby="addPengambilanLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addPengambilanLabel">Warkop 51</h5>
+            <h5 class="modal-title" id="addPengambilanLabel">Form Pengambilan</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <form action="" class="user">
+                <input type="hidden" name="id_pengiriman" id="id_pengiriman_pengambilan">
+                <div class="form-group">
+                    <label for="nama_toko" class="col-form-label">Nama Toko</label>
+                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_pengambilan" readonly>
+                </div>
                 <div class="form-group">
                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
-                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman" value="<?= date('Y-m-d')?>" readonly>
+                    <input type="text" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_pengambilan" readonly>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
-                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan" readonly>
+                    <input type="text" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_pengambilan" readonly>
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-store mr-1"></i>List Produk</h6>
+                        <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-store mr-1"></i>List Barang</h6>
                     </div>
                     <div class="card-body text-gray-900">
-                        <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> inputkan sisa produk</div>
-                        <div class="input-group mb-3">
+                        <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> inputkan sisa barang</div>
+                        <div class="addPengambilanListBarang"></div>
+                        <!-- <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">1. MBK (10)</span>
                             </div>
                             <input type="number" class="form-control form-control-user" aria-label="Amount (to the nearest dollar)">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">2. MBC (20)</span>
-                            </div>
-                            <input type="number" class="form-control form-control-user" aria-label="Amount (to the nearest dollar)">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </form>
@@ -275,7 +325,7 @@
         <div class="modal-footer">
             <form class="user">
                 <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary btn-user">Simpan</button>
+                <button type="button" class="btn btn-primary btn-user" id="btnAddPengambilan">Simpan</button>
             </form>
         </div>
         </div>
@@ -284,60 +334,36 @@
 
 
 <!-- modal detail pengiriman -->
-<div class="modal fade" id="modalDetailPengiriman" tabindex="-1" role="dialog" aria-labelledby="modalDetailPengirimanLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="detailPengiriman" tabindex="-1" role="dialog" aria-labelledby="detailPengirimanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="modalDetailPengirimanLabel">Warkop 51</h5>
+            <h5 class="modal-title" id="detailPengirimanLabel">Detail Pengiriman</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-gray-900">
             <ul class="list-group mb-3">
-                <li class="list-group-item d-flex justify-content-between">
+                <div class="detailPengirimanData"></div>
+                <!-- <li class="list-group-item d-flex justify-content-between">
                     <span>Status</span>
-                    <span>Berhasil</span>
+                    <span id="detailPengirimanStatus"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Tgl. Pengiriman</span>
-                    <span>12 Jan 2021</span>
+                    <span id="detailPengirimanTglPengiriman"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Tgl. Pengambilan</span>
-                    <span>14 Jan 2021</span>
-                </li>
+                    <span id="detailPengirimanTglPengambilan"></span>
+                </li> -->
             </ul>
 
             <ul class="list-group">
-                <li class="list-group-item list-group-item-success">List Produk</li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>1. MBK</span>
-                    <span>
-                        <i class="fa fa-truck mr-3"></i>10<br>
-                    </span>
-                    <span>
-                        <i class="fa fa-truck-pickup mr-3"></i>3<br>
-                    </span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>2. MBC</span>
-                    <span>
-                        <i class="fa fa-truck mr-3"></i>10<br>
-                    </span>
-                    <span>
-                        <i class="fa fa-truck-pickup mr-3"></i>0<br>
-                    </span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>3. MBA</span>
-                    <span>
-                        <i class="fa fa-truck mr-3"></i>10<br>
-                    </span>
-                    <span>
-                        <i class="fa fa-truck-pickup mr-3"></i>2<br>
-                    </span>
-                </li>
+                <li class="list-group-item list-group-item-success">List Barang</li>
+                <div class="detailPengirimanListBarang"></div>
+                
             </ul>
         </div>
         <div class="modal-footer">

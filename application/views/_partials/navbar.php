@@ -7,7 +7,7 @@
 </button>
 
 <!-- Topbar Search -->
-<?php if($navbar == "Toko" || $navbar == "Produk" || $navbar == "List Pengambilan") :?>
+<?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "List Pengambilan") :?>
 <form
     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
@@ -25,7 +25,7 @@
 <!-- Topbar Navbar -->
 <ul class="navbar-nav ml-auto">
 
-    <?php if($navbar == "Toko" || $navbar == "Produk" || $navbar == "Menunggu Pengambilan") :?>
+    <?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "Menunggu Pengambilan") :?>
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -55,22 +55,16 @@
     <?php if($navbar) :?>
         <?php if($navbar == "Toko"):?>
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addStore" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addToko" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-plus"></i>
                 </a>
             </li>
-    <?php elseif($navbar == "Produk"):?>
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addProduk" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-plus"></i>
-            </a>
-        </li>
-    <?php elseif($navbar == "Detail Toko"):?>
-        <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle addPengiriman" data-toggle="modal" href="#addPengiriman" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-plus"></i>
-            </a>
-        </li>
+        <?php elseif($navbar == "Barang"):?>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addBarang" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </li>
         <?php endif;?>
     <?php endif;?>
 
@@ -80,7 +74,7 @@
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $this->session->userdata('username')?></span>
             <img class="img-profile rounded-circle"
                 src="<?= base_url()?>assets/img/undraw_profile.svg">
         </a>

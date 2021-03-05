@@ -1,5 +1,3 @@
-                    </div>
-                    <!-- end row  -->
 
                 </div>
                 <!-- end container fluid -->
@@ -11,7 +9,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; mrscholae 2020</span>
+                        <span>Copyright &copy; baalu 2021</span>
                     </div>
                 </div>
             </footer>
@@ -43,6 +41,13 @@
     <script>
         $("#<?= $sidebar?>").addClass("active");
     </script>
+    <?php
+        if($navbar == "Barang") $this->load->view("../../assets/js/ajax_barang");
+        elseif($navbar == "Toko") $this->load->view("../../assets/js/ajax_toko");
+        elseif($navbar == "Detail Toko") $this->load->view("../../assets/js/detail_toko");
+        elseif($navbar == "Menunggu Pengambilan") $this->load->view("../../assets/js/ajax_pengambilan");
+        
+    ?>
 </body>
 
 </html>

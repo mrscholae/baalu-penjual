@@ -1,5 +1,5 @@
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="javascript:void(0)">
@@ -26,10 +26,10 @@
                 </a>
             </li>
 
-            <li class="nav-item" id="produk">
-                <a class="nav-link" href="<?= base_url()?>produk">
+            <li class="nav-item" id="barang">
+                <a class="nav-link" href="<?= base_url()?>barang">
                     <i class="fas fa-cookie-bite"></i>
-                    <span>Produk</span>
+                    <span>Barang</span>
                 </a>
             </li>
 

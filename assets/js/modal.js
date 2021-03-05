@@ -1,9 +1,4 @@
-$(function() {
-
-    $(".addProdukToko").click(function(){
-        btn_1();
-    })
-    
+$(function() {  
     $(".btn-form-1").click(function(){
         btn_1();
     })
@@ -31,4 +26,5 @@ $(function() {
         $(".form-1").hide();
         $(".form-2").show();
     }
+    
 })
