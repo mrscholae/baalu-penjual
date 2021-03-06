@@ -65,7 +65,7 @@
                             </div>`;
 
                             dropdown = ` <a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data.id_pengiriman+`" data-toggle="modal">Detail</a>
-                                <a class="dropdown-item" href="javascript:void(0)">Edit</a>
+                                <a class="dropdown-item btnEditPengiriman" href="#editPengiriman" data-toggle="modal" data-id="`+data.id_pengiriman+`">Edit</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data.id_pengiriman+`">Hapus</a>`
                         }
@@ -419,6 +419,188 @@
             $(".detailPengirimanListBarang").html(html);
         })
 
+        // when edit pengiriman click
+        $(document).on("click", ".btnEditPengiriman", function(){
+            
+            // button form
+            $(".btn-form-1").addClass("active");
+            $(".btn-form-2").removeClass("active");
+            $(".btn-form-3").removeClass("active");
+
+            // form
+            $(".form-1").show();
+            $(".form-2").hide();
+            $(".form-3").hide();
+
+            // footer
+            $(".footer-1").show();
+            $(".footer-2").hide();
+            $(".footer-3").hide();
+            
+            let id_pengiriman = $(this).data("id");
+
+            data_edit_pengiriman(id_pengiriman);
+
+        })
+
+        // when tombol simpan click in modal edit pengiriman 
+        $("#btnEditPengiriman").click(function(){
+            Swal.fire({
+                icon: 'question',
+                text: 'Yakin akan mengubah data pengiriman?',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then(function (result) {
+                if (result.value) {
+                    let id_pengiriman = $("#id_pengiriman_edit").val();
+                    let tgl_pengiriman = $("#tgl_pengiriman_edit").val();
+                    let tgl_pengambilan = $("#tgl_pengambilan_edit").val();
+
+                    if(tgl_pengiriman == "" || tgl_pengambilan == ""){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'lengkapi isi form terlebih dahulu'
+                        })
+                    } else {
+
+                        data = {id_pengiriman: id_pengiriman, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan}
+                        let result = ajax("<?= base_url()?>toko/edit_pengiriman", "POST", data);
+
+                        if(result == 1){
+                            reload_data();
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                text: 'Berhasil mengubah data pengiriman',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'terjadi kesalahan'
+                            })
+                        }
+                    }
+                }
+            })
+        })
+
+        // when tombol trash click in modal edit pengiriman barang 
+        $(document).on("click",".btnDeleteDetailPengiriman",function(){
+            let data = $(this).data("id");
+            data = data.split("|");
+
+            let id = data[0];
+            let id_pengiriman = data[1];
+            let kode_barang = data[2]
+           
+            Swal.fire({
+                icon: 'question',
+                text: 'Yakin akan menghapus '+kode_barang+' dari pengiriman?',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then(function (result) {
+                if (result.value) {
+                    data = {id: id}
+
+                    let result = ajax("<?= base_url()?>toko/delete_detail_pengiriman", "POST", data);
+
+                    if(result == 1){
+                        
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            text: 'Berhasil menghapus barang dari pengiriman',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        data_edit_pengiriman(id_pengiriman);
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'terjadi kesalahan, gagal menghapus barang dari pengiriman'
+                        })
+                    }
+                }
+            })
+        })
+
+        // when tombol simpan edit barang click
+        $("#btnEditPengirimanBarang").click(function(){
+            Swal.fire({
+                icon: 'question',
+                text: 'Yakin akan mengubah detail barang pengiriman?',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then(function (result) {
+                if (result.value) {
+                    id_pengiriman = $("#id_pengiriman_edit").val();
+
+                    id_detail = new Array();
+                    $.each($("input[name='id_detail_edit']"), function(){
+                        id_detail.push($(this).val());
+                    });
+                    
+                    // untuk cek jik ada qty yang 0
+                    let errorQty = 0;
+
+                    qty = new Array();
+                    $.each($("input[name='qty_edit']"), function(){
+                        qty.push($(this).val());
+
+                        if($(this).val() == 0 || $(this).val() == ""){
+                            errorQty = 1;
+                        }
+
+                    });
+
+                    if(errorQty == 0){
+                        data = {id_detail:id_detail, qty:qty}
+                        let result = ajax("<?= base_url()?>toko/edit_barang_pengiriman", "POST", data);
+
+                        if(result == 1){
+                            data_edit_pengiriman(id_pengiriman);
+                            $("#addPengiriman").modal("hide");
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                text: 'Berhasil mengubah detail pengiriman barang',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'terjadi kesalahan, ulangi proses input'
+                            })
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'inputkan jumlah barang, jumlah barang tidak boleh 0 atau kosong'
+                        })
+                    }
+                    
+                }
+            })
+        })
+
         // when tombol delete pengiriman click 
         $(document).on("click", ".bthHapusPengiriman", function(){
             let id_pengiriman = $(this).data("id");
@@ -456,7 +638,7 @@
             })
         })
 
-        // when button check bg success clicked
+        // when button circle bg warning clicked
         $(document).on("click", ".btnAddPengambilan", function(){
             let id_pengiriman = $(this).data("id");
             // console.log(id_pengiriman)
@@ -553,6 +735,43 @@
             })
         })
 
+        // when tombol kirim click in modal edit pengiriman
+        $("#btnTambahEditPengiriman").click(function(){
+                var atLeastOneIsChecked = $('input[name="barang"]:checked').length;
+                if(atLeastOneIsChecked == 0){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'pilih barang yang akan ditambahkan terlebih dahulu'
+                    })
+                } else {
+                    let i = 1;
+                    html = "";
+                    $.each($("input[name='barang']:checked"), function(){
+                        data = $(this).val();
+                        data = data.split("|");
+                        id_barang = data[0];
+                        kode_barang = data[1];
+                        
+                        html += `<div class="input-group input-group-sm mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">`+i+`. `+kode_barang+`</span>
+                            </div>
+                            <input type="hidden" name="id_barang_pengiriman" value="`+id_barang+`">
+                            <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="0">
+                        </div>`;
+
+                        i++;
+                    });
+
+                    $("#editPengirimanTambahBarang").html(html);
+                    
+                    $("#btnFormKirim").hide();
+                    $("#formAddPengiriman").show();
+                    $("#btnFormAddPengiriman").show();
+                    $("#listAllBarang").hide();
+                }
+            })
 
         function ajax(url, method, data){
             var result = "";
@@ -570,6 +789,60 @@
 
             return result;
         }
-    })
 
+        function data_edit_pengiriman(id_pengiriman){
+            
+            let data = {id_pengiriman:id_pengiriman};
+
+            let result = ajax("<?= base_url()?>toko/get_detail_pengiriman", "POST", data);
+
+            $("#id_pengiriman_edit").val(result.pengiriman.id_pengiriman);
+            $(".nama_toko_edit_pengiriman").val(result.pengiriman.nama_toko);
+            $("#tgl_pengiriman_edit").val(result.pengiriman.tgl_pengiriman_format);
+            $("#tgl_pengambilan_edit").val(result.pengiriman.tgl_pengambilan_format);
+
+            html = "";
+            i = 1;
+
+            if(result.detail_pengiriman.length != 0){
+                
+                result.detail_pengiriman.forEach(data => {
+                    
+                    html += `<div class="input-group input-group-sm mb-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">`+i+`. `+data.kode_barang+`</span>
+                        </div>
+                        <input type="hidden" name="id_detail_edit" value="`+data.id+`">
+                        <input type="number" name="qty_edit" class="form-control" value="`+data.kirim+`" aria-label="Amount (to the nearest dollar)">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><a href="javascript:void(0)" class="btnDeleteDetailPengiriman" data-id="`+data.id+`|`+data.id_pengiriman+`|`+data.nama_barang+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
+                        </div>                   
+                    </div>`
+                    i++;
+                });
+
+            } else {
+                html += `<div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning"></i>list barang kosong</div>`
+            }
+
+            $("#editPengirimanBarang").html(html);
+
+            result = ajax("<?= base_url()?>toko/get_all_barang_belum_dikirim", "POST", data);
+
+            html = "";
+            result.forEach(data => {
+                html += `
+                    <div class="form-group text-gray-900">
+                        <div class="custom-control custom-checkbox small">
+                            <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`" class="custom-control-input" id="`+data.id_barang+`">
+                            <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
+                        </div>
+                    </div>`
+            });
+
+            $("#editPengirimanTambahBarang").html(html)
+
+        }
+
+    })
 </script>

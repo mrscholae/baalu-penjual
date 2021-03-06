@@ -228,12 +228,12 @@
     </div>
 </div>
 
-<!-- modal add barang toko -->
-<div class="modal fade" id="addBarangToko" tabindex="-1" role="dialog" aria-labelledby="addBarangTokoLabel" aria-hidden="true">
+<!-- modal edit pengiriman -->
+<div class="modal fade" id="editPengiriman" tabindex="-1" role="dialog" aria-labelledby="editPengirimanLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addBarangTokoLabel">Tambah Barang Toko</h5>
+            <h5 class="modal-title" id="editPengirimanLabel">Edit Pengiriman</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -243,20 +243,38 @@
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
-                            <a href="javascript:void(0)" class='nav-link active btn-form-1'><i class="fas fa-cookie-bite"></i></a>
+                            <a href="javascript:void(0)" class='nav-link active btn-form-1'><i class="fas fa-database"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:void(0)" class='nav-link btn-form-2'><i class="fas fa-list"></i></a>
+                            <a href="javascript:void(0)" class='nav-link btn-form-2'><i class="fas fa-edit"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class='nav-link btn-form-3'><i class="fas fa-times"></i></a>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body cus-font">
+                <div class="card-body text-gray-900 cus-font">
                     
                     <div class="card form-1">
                         <div class="card-header text-primary">
-                            <strong>Data Barang Toko</strong>
+                            <strong>Data Pengiriman</strong>
                         </div>
-                        <div class="card-body" id="listBarangToko">
+                        <div class="card-body">
+                            <form action="" class="user">
+                                <input type="hidden" name="id_pengiriman" id="id_pengiriman_edit" readonly>
+                                <div class="form-group">
+                                    <label for="nama_toko" class="col-form-label">Nama Toko</label>
+                                    <input type="text" name="nama_toko" class="form-control form-control-user nama_toko_edit_pengiriman" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
+                                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_edit" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
+                                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_edit" required>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
@@ -264,7 +282,25 @@
                         <div class="card-header text-primary">
                             <strong>Data Barang</strong>
                         </div>
-                        <div class="card-body" id="listBarang">
+                        <div class="card-body">
+                            
+                            <form action="" class="user">
+                                <div class="form-group">
+                                    <label for="nama_toko" class="col-form-label">Nama Toko</label>
+                                    <input type="text" name="nama_toko" class="form-control form-control-user nama_toko_edit_pengiriman" readonly>
+                                </div>
+                            </form>
+
+                            <label for=""><b>List Barang</b></label>
+                            <div id="editPengirimanBarang"></div>
+                        </div>
+                    </div>
+
+                    <div class="card form-3">
+                        <div class="card-header text-primary">
+                            <strong>Tambah Barang</strong>
+                        </div>
+                        <div class="card-body" id="editPengirimanTambahBarang">
                         </div>
                     </div>
 
@@ -272,9 +308,31 @@
             </div>
         </div>
         <div class="modal-footer">
-            <form class="user">
-                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-            </form>
+            <div class="footer-1">
+                <form action="" class="user">
+                    <span>
+                        <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-success btn-user" id="btnEditPengiriman">Simpan</button>
+                    </span>
+                </form>
+            </div>
+
+            <div class="footer-2">
+                <form action="" class="user">
+                    <span>
+                        <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanBarang">Simpan</button>
+                    </span>
+                </form>
+            </div>
+            
+            <div class="footer-3">
+                <form action="" class="user">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-success btn-user" id="btnTambahEditPengiriman"><i class="fa fa-plus mr-1"></i>Tambah</button>
+                    </div>
+                </form>
+            </div>
         </div>
         </div>
     </div>
@@ -312,12 +370,6 @@
                     <div class="card-body text-gray-900">
                         <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> inputkan sisa barang</div>
                         <div class="addPengambilanListBarang"></div>
-                        <!-- <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">1. MBK (10)</span>
-                            </div>
-                            <input type="number" class="form-control form-control-user" aria-label="Amount (to the nearest dollar)">
-                        </div> -->
                     </div>
                 </div>
             </form>
@@ -331,7 +383,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- modal detail pengiriman -->
 <div class="modal fade" id="detailPengiriman" tabindex="-1" role="dialog" aria-labelledby="detailPengirimanLabel" aria-hidden="true">

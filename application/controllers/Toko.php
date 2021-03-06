@@ -12,7 +12,7 @@ class Toko extends CI_Controller {
         $this->load->model("Main_model");
         
         if(!$this->session->userdata('username')){
-            $this->session->set_flashdata('pesan', 'cek');
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa fa-times-circle text-danger mr-1"></i> Maaf Anda harus login terlebih dahulu<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div');
 			redirect(base_url("auth"));
 		}
     }
@@ -214,14 +214,19 @@ class Toko extends CI_Controller {
 
             $pengiriman = $this->Main_model->get_one("pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual']]);
             $data['pengiriman'] = $pengiriman;
+            $data['pengiriman']['tgl_pengiriman_format'] = $pengiriman['tgl_pengiriman'];
+            $data['pengiriman']['tgl_pengambilan_format'] = $pengiriman['tgl_pengambilan'];
             $data['pengiriman']['tgl_pengiriman'] = date("d-M-y", strtotime($pengiriman['tgl_pengiriman']));
             $data['pengiriman']['tgl_pengambilan'] = date("d-M-y", strtotime($pengiriman['tgl_pengambilan']));
-            $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual']]);
+            $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+
+            $data['detail_pengiriman'] = [];
 
             foreach ($detail_pengiriman as $i => $detail) {
                 $data['detail_pengiriman'][$i] = $detail;
                 $barang = $this->Main_model->get_one("barang", ["id_barang" => $detail['id_barang'], "id_penjual" => $penjual['id_penjual']]);
                 $data['detail_pengiriman'][$i]['kode_barang'] = $barang['kode_barang'];
+                $data['detail_pengiriman'][$i]['nama_barang'] = $barang['nama_barang'];
             }
 
             echo json_encode($data);
@@ -246,21 +251,24 @@ class Toko extends CI_Controller {
         }
 
         // daftar seluruh barang yang belum dijual di suatu toko
-        public function get_all_barang(){
+        public function get_all_barang_belum_dikirim(){
+
+            $penjual = $this->_data_penjual();
+            $id_pengiriman = $this->input->post("id_pengiriman");
+
             // tampilkan seluruh barang 
             $a = [];
             $b = [];
             $data = [];
             
             // peserta kelas 
-            $id_toko = $this->input->post("id_toko");
-            $y = $this->Main_model->get_all("barang_toko", ["id_toko" => $id_toko, "hapus" => 0]);
+            $y = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $id_pengiriman, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
             foreach ($y as $i => $y) {
                 $b[$i] = $y['id_barang'];
             }
 
             // calon barang toko
-            $x = $this->Main_model->get_all("barang", ["hapus" => "0"], "nama_barang");
+            $x = $this->Main_model->get_all("barang", ["hapus" => "0", "id_penjual" => $penjual['id_penjual']], "nama_barang");
             $i = 0;
             foreach ($x as $x) {
                 if(!in_array($x['id_barang'], $b)){
@@ -288,6 +296,43 @@ class Toko extends CI_Controller {
 
             $data = $this->Main_model->edit_data("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']], $data);
             if($data){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
+
+        public function edit_pengiriman(){
+            $penjual = $this->_data_penjual();
+            $id_pengiriman = $this->input->post("id_pengiriman");
+
+            $data = [
+                "tgl_pengiriman" => $this->input->post("tgl_pengiriman"),
+                "tgl_pengambilan" => $this->input->post("tgl_pengambilan"),
+            ];
+
+            $data = $this->Main_model->edit_data("pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual']], $data);
+
+            if($data) {
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
+
+        public function edit_barang_pengiriman(){
+            
+            $penjual = $this->_data_penjual();
+            $id = $this->input->post("id_detail");
+            $qty = $this->input->post("qty");
+            $success = 0;
+
+            foreach ($id as $i => $id) {
+                $data = $this->Main_model->edit_data("detail_pengiriman", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["kirim" => $qty[$i]]);
+                $success = 1;
+            }
+
+            if($success == 1){
                 echo json_encode("1");
             } else {
                 echo json_encode("0");
@@ -333,6 +378,20 @@ class Toko extends CI_Controller {
                 echo json_encode("0");
             }
         }
+
+        public function delete_detail_pengiriman(){
+            $id = $this->input->post("id");
+            $penjual = $this->_data_penjual();
+
+            $data = $this->Main_model->edit_data("detail_pengiriman", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
+            
+            if($data){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
+    // delete 
 
 
     function _data_penjual(){

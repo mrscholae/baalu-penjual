@@ -40,7 +40,7 @@
                                         <a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data.id_pengiriman+`" data-toggle="modal">Detail</a>
                                         <a class="dropdown-item" href="#">Edit</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Hapus</a>
+                                        <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data.id_pengiriman+`">Hapus</a>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                     </div>`;
                 });
             } else {
-                html += `<div class="col-12"><div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning mr-1"></i>Data pengiriman kosong</div></div>`
+                html += `<div class="col-12"><div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning mr-1"></i>Data pengambilan kosong</div></div>`
             }
             
 
@@ -116,7 +116,44 @@
             $(".detailPengirimanListBarang").html(html);
         })
 
-        // when button check bg success clicked
+        // when tombol delete pengiriman click 
+        $(document).on("click", ".bthHapusPengiriman", function(){
+            let id_pengiriman = $(this).data("id");
+
+            Swal.fire({
+                icon: 'question',
+                text: 'Yakin akan menghapus data pengiriman?',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then(function (result) {
+                if (result.value) {
+                    data = {id_pengiriman: id_pengiriman}
+                    let result = ajax("<?= base_url()?>toko/hapus_pengiriman", "POST", data);
+
+                    if(result == 1){
+                        reload_data();
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            text: 'Berhasil menghapus data pengiriman',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'terjadi kesalahan, gagal menghapus data pengiriman'
+                        })
+                    }
+                }
+            })
+        })
+
+        // when button circle bg warning clicked
         $(document).on("click", ".btnAddPengambilan", function(){
             let id_pengiriman = $(this).data("id");
             // console.log(id_pengiriman)
@@ -149,73 +186,69 @@
             $(".addPengambilanListBarang").html(html);
         })
 
-        // $("#btnAddPengambilan").click(function(){
-
-        // })
-
         // when tombol simpan click in modal add pengambilan 
         $("#btnAddPengambilan").click(function(){
-                Swal.fire({
-                    icon: 'question',
-                    text: 'Yakin akan menginputkan data pengambilan?',
-                    showCloseButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Tidak'
-                }).then(function (result) {
-                    if (result.value) {
-                        id_pengiriman = $("#id_pengiriman_pengambilan").val();
+            Swal.fire({
+                icon: 'question',
+                text: 'Yakin akan menginputkan data pengambilan?',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then(function (result) {
+                if (result.value) {
+                    id_pengiriman = $("#id_pengiriman_pengambilan").val();
 
-                        id_detail = new Array();
-                        $.each($("input[name='id_detail']"), function(){
-                            id_detail.push($(this).val());
-                        });
-                        
-                        // untuk cek jik ada qty yang 0
-                        let errorQty = 0;
+                    id_detail = new Array();
+                    $.each($("input[name='id_detail']"), function(){
+                        id_detail.push($(this).val());
+                    });
+                    
+                    // untuk cek jik ada qty yang 0
+                    let errorQty = 0;
 
-                        qty = new Array();
-                        $.each($("input[name='qty_kembali']"), function(){
-                            qty.push($(this).val());
+                    qty = new Array();
+                    $.each($("input[name='qty_kembali']"), function(){
+                        qty.push($(this).val());
 
-                            if($(this).val() == ""){
-                                errorQty = 1;
-                            }
+                        if($(this).val() == ""){
+                            errorQty = 1;
+                        }
 
-                        });
+                    });
 
-                        if(errorQty == 0){
-                            data = {id_pengiriman:id_pengiriman, id_detail:id_detail, qty:qty}
-                            let result = ajax("<?= base_url()?>toko/add_pengambilan", "POST", data);
+                    if(errorQty == 0){
+                        data = {id_pengiriman:id_pengiriman, id_detail:id_detail, qty:qty}
+                        let result = ajax("<?= base_url()?>toko/add_pengambilan", "POST", data);
 
-                            if(result == 1){
-                                reload_data();
-                                $("#addPengambilan").modal("hide");
+                        if(result == 1){
+                            reload_data();
+                            $("#addPengambilan").modal("hide");
 
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    text: 'Berhasil menginputkan pengambilan',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'terjadi kesalahan, ulangi proses input'
-                                })
-                            }
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                text: 'Berhasil menginputkan pengambilan',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                         } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'inputkan jumlah barang, jumlah barang tidak boleh kosong'
+                                text: 'terjadi kesalahan, ulangi proses input'
                             })
                         }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'inputkan jumlah barang, jumlah barang tidak boleh kosong'
+                        })
                     }
-                })
+                }
             })
+        })
 
         function ajax(url, method, data){
             var result = "";
