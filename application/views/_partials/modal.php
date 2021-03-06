@@ -300,40 +300,46 @@
                         <div class="card-header text-primary">
                             <strong>Tambah Barang</strong>
                         </div>
-                        <div class="card-body" id="editPengirimanTambahBarang">
+                        <div class="card-body">
+                            <div id="editPengirimanTambahList"></div>
+                            <div id="editPengirimanTambahBarang"></div>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
             <div class="footer-1">
-                <form action="" class="user">
-                    <span>
-                        <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-success btn-user" id="btnEditPengiriman">Simpan</button>
-                    </span>
-                </form>
+                <div class="modal-footer">
+                    <form action="" class="user">
+                        <span>
+                            <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-success btn-user" id="btnEditPengiriman">Simpan</button>
+                        </span>
+                    </form>
+                </div>
             </div>
 
             <div class="footer-2">
-                <form action="" class="user">
-                    <span>
-                        <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanBarang">Simpan</button>
-                    </span>
-                </form>
+                <div class="modal-footer">
+                    <form action="" class="user">
+                        <span>
+                            <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanBarang">Simpan</button>
+                        </span>
+                    </form>
+                </div>
             </div>
             
             <div class="footer-3">
-                <form action="" class="user">
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-success btn-user" id="btnTambahEditPengiriman"><i class="fa fa-plus mr-1"></i>Tambah</button>
-                    </div>
-                </form>
+                <div class="modal-footer">
+                    <form action="" class="user">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanTambah"><i class="fa fa-plus mr-1"></i> Tambah</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>

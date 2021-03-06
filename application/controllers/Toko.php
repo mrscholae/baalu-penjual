@@ -197,6 +197,39 @@ class Toko extends CI_Controller {
                 echo json_encode("0");
             }
         }
+
+        public function add_barang_pengiriman(){
+            $penjual = $this->_data_penjual();
+            
+            $id_pengiriman = $this->input->post("id_pengiriman");
+                
+            $id_barang = $this->input->post("id_barang");
+            $qty = $this->input->post("qty");
+
+            $success = 0;
+
+            foreach ($id_barang as $i => $id_barang) {
+                if($qty[$i] != 0) {
+                    $data = [
+                        "id_pengiriman" => $id_pengiriman,
+                        "id_barang" => $id_barang,
+                        "kirim" => $qty[$i],
+                        "kembali" => "0",
+                        "id_penjual" => $penjual['id_penjual']
+                    ];
+
+                    $this->Main_model->add_data("detail_pengiriman", $data);
+
+                    $success = 1;
+                }
+            }
+
+            if($success == 1){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
     // add 
     
     // get 
