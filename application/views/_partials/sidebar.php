@@ -33,6 +33,13 @@
                 </a>
             </li>
 
+            <li class="nav-item" id="laporan">
+                <a class="nav-link" href="<?= base_url()?>laporan">
+                    <i class="fas fa-flag"></i>
+                    <span>Laporan</span>
+                </a>
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

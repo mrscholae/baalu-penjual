@@ -23,6 +23,19 @@ class Main_model extends CI_MODEL{
         return $this->db->get()->result_array();
     }
 
+    
+    public function get_all_limit($table, $where = "", $order = "", $by = "ASC", $rowno, $rowperpage){
+        $this->db->from($table);
+        if($where)
+            $this->db->where($where);
+        if($order)
+            $this->db->order_by($order, $by);
+
+        $this->db->limit($rowperpage, $rowno);  
+        
+        return $this->db->get()->result_array();
+    }
+
     public function get_all_group_by($table, $where = "", $group = ""){
         $this->db->from($table);
         if($where)

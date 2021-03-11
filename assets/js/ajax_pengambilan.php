@@ -1,7 +1,133 @@
 <script>
 
     $(function(){
-        reload_data();
+        // reload_data();
+
+        var page = "";
+                
+        // Detect pagination click
+        $('#pagination').on('click','a',function(e){
+            e.preventDefault(); 
+            var pageno = $(this).attr('data-ci-pagination-page');
+            loadPagination(pageno);
+
+            page = pageno;
+        });
+
+        loadPagination(0);
+
+        // Load pagination
+        function loadPagination(pagno){
+            let result = ajax("<?= base_url()?>pengambilan/loadRecord/"+pagno, "POST", "");
+
+            if(result.total_rows != 0) {
+                
+                if(result.result.length != 0){
+                    
+                    $('#pagination').html(result.pagination);
+                    createTable(result.result,result.row);
+
+                } else {
+                    
+                    pageback = pagno - 1;
+                    let result = ajax("<?= base_url()?>pengambilan/loadRecord/"+pageback, "POST", "");
+
+                    if(result.result.length != 0){
+                    
+                        $('#pagination').html(result.pagination);
+                        createTable(result.result,result.row);
+
+                    } else {
+                        
+                        pagenext = pagno + 1;
+                        let result = ajax("<?= base_url()?>pengambilan/loadRecord/"+pagnext, "POST", "");
+
+                        if(result.result.length != 0){
+                        
+                            $('#pagination').html(result.pagination);
+                            createTable(result.result,result.row);
+
+                        } else {
+                            
+                            html = `<div class="col-12"><div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning mr-1"></i>Data pengambilan kosong</div></div>`
+                            $("#dataAjax").html(html);
+                        
+                        }
+
+                    }
+
+                }
+
+            } else {
+                html = `<div class="col-12"><div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning mr-1"></i>Data pengambilan kosong</div></div>`
+                $("#dataAjax").html(html);
+
+            }
+            
+        }
+
+        // Create table list
+        function createTable(data,sno){
+
+            sno = Number(sno);
+
+            html = "";
+
+            for(index in data){
+                if(data[index].status == "Selesai"){
+                    status = `
+                    <div class="list-group-item-success card-header py-3 d-flex flex-row align-items-center justify-content-between">    
+                        <h6 class="m-0 font-weight-bold text-dark"><i class="fa fa-check-circle text-success mr-1"></i>Selesai</h6>`
+
+                    pengambilan = ``;
+                } else {
+                    status = `
+                    <div class="list-group-item-warning card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-dark"><i class="fa fa-exclamation-circle text-warning mr-1"></i>Proses</h6>`
+                    
+                    // button pengambilan 
+                    pengambilan = `<div class="d-flex justify-content-center mt-1">
+                        <a href="#addPengambilan" data-toggle="modal" data-id="`+data[index].id_pengiriman+`" class="btn btn-circle btn-warning mr-1 btnAddPengambilan"><i class="fa fa-hand-holding-usd"></i></a>
+                    </div>`;
+                }
+
+                html += `
+                <div class="col-12 col-md-4">
+                    <div class="card shadow mb-4">
+                        
+                            `+status+`
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                    aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-header">Pengiriman</div>
+                                    <a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data[index].id_pengiriman+`" data-toggle="modal">Detail</a>
+                                    <a class="dropdown-item btnEditPengiriman" href="#editPengiriman" data-toggle="modal" data-id="`+data[index].id_pengiriman+`">Edit</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data[index].id_pengiriman+`">Hapus</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body text-gray-900">
+                            <p><i class="fa fa-store mr-3"></i>`+data[index].nama_toko+` </p>
+                            <p><i class="fa fa-map-marker-alt mr-4"></i>`+data[index].alamat+` </p>
+                            <p><i class="fa fa-truck mr-3"></i>`+data[index].tgl_pengiriman+`</p>
+                            <p><i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>`+data[index].tgl_pengambilan+`</p>
+                            `+pengambilan+`
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            $("#dataAjax").html(html);
+
+        };
+
+
+
 
         function reload_data(){
             let result = ajax("<?= base_url()?>pengambilan/ajax_pengambilan", "POST", "");
@@ -133,7 +259,8 @@
                     let result = ajax("<?= base_url()?>toko/hapus_pengiriman", "POST", data);
 
                     if(result == 1){
-                        reload_data();
+                        // reload_data();
+                        loadPagination(page)
 
                         Swal.fire({
                             position: 'center',
@@ -222,7 +349,10 @@
                         let result = ajax("<?= base_url()?>toko/add_pengambilan", "POST", data);
 
                         if(result == 1){
-                            reload_data();
+                            // reload_data();
+
+                            loadPagination(page)
+
                             $("#addPengambilan").modal("hide");
 
                             Swal.fire({
@@ -358,7 +488,9 @@
                         let result = ajax("<?= base_url()?>toko/edit_pengiriman", "POST", data);
 
                         if(result == 1){
-                            reload_data();
+                            // reload_data();
+
+                            loadPagination(page)
 
                             Swal.fire({
                                 position: 'center',
@@ -652,6 +784,14 @@
                 }
             })
         })
+
+        // when btn search navbar clicked
+        $(".btnSearchNavbar").click(function(){
+            let nama_toko = $(".searchNavbar").val();
+
+            console.log(nama_toko);
+        })
+
 
         function ajax(url, method, data){
             var result = "";

@@ -7,14 +7,20 @@
 </button>
 
 <!-- Topbar Search -->
-<?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "List Pengambilan") :?>
+<?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "Menunggu Pengambilan") :?>
 <form
     class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
-        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-            aria-label="Search" aria-describedby="basic-addon2">
+        <?php if($navbar == "Toko") :?>
+            <input type="text" id="searchNavbar" class="form-control bg-light border-0 small" placeholder="Cari toko ...." aria-label="Search" aria-describedby="basic-addon2">
+        <?php elseif($navbar == "Barang") :?>
+            <input type="text" id="searchNavbar" class="form-control bg-light border-0 small" placeholder="Cari barang ...." aria-label="Search" aria-describedby="basic-addon2">
+        <?php elseif($navbar == "Menunggu Pengambilan") :?>
+            <input type="text" id="searchNavbar" class="form-control bg-light border-0 small" placeholder="Cari toko ...." aria-label="Search" aria-describedby="basic-addon2">
+        <?php endif;?>
+        
         <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
+            <button class="btn btn-primary" type="button" id="btnSearchNavbar">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
@@ -37,11 +43,11 @@
                 aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small"
+                        <input type="text" id="searchNavbarSmall" class="form-control bg-light border-0 small"
                             placeholder="Search for..." aria-label="Search"
                             aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
+                            <button class="btn btn-primary" type="button" id="btnSearchNavbarSmall">
                                 <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
