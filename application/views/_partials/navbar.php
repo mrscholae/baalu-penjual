@@ -61,7 +61,7 @@
     <?php if($navbar) :?>
         <?php if($navbar == "Toko"):?>
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addToko" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addToko" id="btnPlusToko" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-plus"></i>
                 </a>
             </li>

@@ -38,6 +38,8 @@ class Barang extends CI_Controller {
             foreach ($barang as $i => $barang) {
                 $data[$i] = $barang;
                 $data[$i]['tgl_rilis'] = date("d-M-Y", strtotime($barang['tgl_rilis']));
+                $data[$i]['harga'] = $this->Main_model->rupiah($barang['harga']);
+                $data[$i]['bagi_hasil'] = $this->Main_model->rupiah($barang['bagi_hasil']);
             }
 
             echo json_encode($data);
@@ -52,6 +54,8 @@ class Barang extends CI_Controller {
                 "nama_barang" => $this->input->post("nama_barang"),
                 "kode_barang" => $this->input->post("kode_barang"),
                 "tgl_rilis" => $this->input->post("tgl_rilis"),
+                "harga" => $this->Main_model->nominal($this->input->post("harga")),
+                "bagi_hasil" => $this->Main_model->nominal($this->input->post("bagi_hasil")),
                 "id_penjual" => $penjual['id_penjual']
             ];
 
@@ -90,6 +94,8 @@ class Barang extends CI_Controller {
                 "id_barang" => $this->input->post("id_barang"),
                 "nama_barang" => $this->input->post("nama_barang"),
                 "kode_barang" => $this->input->post("kode_barang"),
+                "harga" => $this->Main_model->nominal($this->input->post("harga")),
+                "bagi_hasil" => $this->Main_model->nominal($this->input->post("bagi_hasil")),
                 "tgl_rilis" => $this->input->post("tgl_rilis"),
             ];
 

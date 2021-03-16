@@ -88,4 +88,11 @@ class Main_model extends CI_MODEL{
             $this->db->where($where);
         return $this->db->get()->result_array();
     }
+
+
+    // other function 
+    public function rupiah($angka){           
+        $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
+        return $hasil_rupiah;
+    }
 }

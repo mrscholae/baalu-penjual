@@ -29,8 +29,9 @@
                                     </div>
                                 </div>
                                 <div class="card-body text-gray-900">
-                                    <i class="fa fa-map-marker-alt mr-4"></i>`+data.alamat+`<br>
-                                    <i class="fa fa-truck mr-3"></i>`+data.pengiriman+` pengiriman <br>
+                                    <p><i class="fa fa-map-marker-alt mr-4"></i>`+data.alamat+`</p>
+                                    <p><i class="fa fa-map-signs mr-3"></i>`+data.kecamatan+`</p>
+                                    <p><i class="fa fa-truck mr-3"></i>`+data.pengiriman+` pengiriman </p>
                                     <div class="d-flex justify-content-center mt-1">
                                         <a href="#addPengiriman" data-toggle="modal" class="btn btn-circle btn-success mr-1 addPengiriman" data-id="`+data.id_toko+`|`+data.nama_toko+`"><i class="fa fa-truck"></i></a>
                                         <a href="<?= base_url()?>toko/detail/`+data.link_toko+`" class="btn btn-circle btn-info"><i class="fa fa-info"></i></a>
@@ -50,6 +51,60 @@
             $("#dataAjax").html(html);
         }
 
+        // when tombol add toko click
+        $("#btnPlusToko").click(function(){
+            
+            $("#kecamatan_lainnya_add").prop("disabled", true);
+            $("#kecamatan_lainnya_add").prop("required", false);
+
+            list_kecamatan();
+
+        })
+
+        // option untuk list kecamatan 
+        function list_kecamatan(){
+            data = ajax("<?= base_url()?>/toko/get_all_kecamatan", "POST", "");
+
+            html = `<option value="">Pilih Kecamatan</option>`;
+
+            if(data.length != 0){
+                data.forEach(data => {
+                    html += `<option value="`+data.kecamatan+`">`+data.kecamatan+`</option>`;
+                });
+
+
+            }
+            
+            html += `<option value="Lainnya">Lainnya</option>`;
+            $("#kecamatan_add").html(html);
+            $("#kecamatan_edit").html(html);
+        }
+
+        // jika opsi kecamatan berubah 
+        $("#kecamatan_add").change(function(){
+            let sumber = $(this).val();
+            if(sumber == "Lainnya"){
+                $("#kecamatan_lainnya_add").prop("disabled", false);
+                $("#kecamatan_lainnya_add").prop("required", true);
+            } else {
+                $("#kecamatan_lainnya_add").val("");
+                $("#kecamatan_lainnya_add").prop("disabled", true);
+                $("#kecamatan_lainnya_add").prop("required", false);
+            }
+        })
+
+        $("#kecamatan_edit").change(function(){
+            let sumber = $(this).val();
+            if(sumber == "Lainnya"){
+                $("#kecamatan_lainnya_edit").prop("disabled", false);
+                $("#kecamatan_lainnya_edit").prop("required", true);
+            } else {
+                $("#kecamatan_lainnya_edit").val("");
+                $("#kecamatan_lainnya_edit").prop("disabled", true);
+                $("#kecamatan_lainnya_edit").prop("required", false);
+            }
+        })
+
         $("#btnAddToko").click(function(){
             Swal.fire({
                 icon: 'question',
@@ -65,20 +120,30 @@
                     let alamat = $("#alamat_add").val();
                     let pj = $("#pj_add").val();
                     let no_hp = $("#no_hp_add").val();
+                    let kecamatan = $("#kecamatan_add").val();
+                    let kecamatan_lainnya = $("#kecamatan_lainnya_add").val();
+
+                    if(kecamatan != "Lainnya"){
+                        kecamatan = kecamatan;
+                    } else {
+                        kecamatan = kecamatan_lainnya
+                    }
                     
-                    if(tgl_bergabung == "" || nama_toko == "" || alamat == "" || pj == ""|| no_hp == ""){
+                    if(tgl_bergabung == "" || nama_toko == "" || alamat == "" || pj == "" || no_hp == "" || kecamatan == ""){
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Gagal menambahkan data toko, lengkapi isi form terlebih dahulu'
                         })
                     } else {
-                        data = {tgl_bergabung: tgl_bergabung, nama_toko: nama_toko, alamat: alamat, pj: pj, no_hp: no_hp}
+                        data = {tgl_bergabung: tgl_bergabung, nama_toko: nama_toko, alamat: alamat, pj: pj, no_hp: no_hp, kecamatan: kecamatan}
                         let result = ajax("<?= base_url()?>toko/add_toko", "POST", data);
 
                         if(result == 1){
                             reload_data();
                             $("#formAddToko").trigger("reset");
+
+                            list_kecamatan();
 
                             Swal.fire({
                                 position: 'center',
@@ -105,10 +170,16 @@
             let data = {id_toko: id_toko};
             let result = ajax("<?= base_url()?>toko/get_toko", "POST", data);
             
+            list_kecamatan();
+
+            $("#kecamatan_lainnya_edit").prop("disabled", true);
+            $("#kecamatan_lainnya_edit").prop("required", false);
+
             $("#id_toko_edit").val(result.id_toko);
             $("#tgl_bergabung_edit").val(result.tgl_bergabung);
             $("#nama_toko_edit").val(result.nama_toko);
             $("#alamat_edit").val(result.alamat);
+            $("#kecamatan_edit").val(result.kecamatan);
             $("#pj_edit").val(result.pj);
             $("#no_hp_edit").val(result.no_hp);
         })
@@ -130,20 +201,36 @@
                     let alamat = $("#alamat_edit").val();
                     let pj = $("#pj_edit").val();
                     let no_hp = $("#no_hp_edit").val();
+
+                    let kecamatan = $("#kecamatan_edit").val();
+                    let kecamatan_lainnya = $("#kecamatan_lainnya_edit").val();
+
+                    if(kecamatan != "Lainnya"){
+                        kecamatan = kecamatan;
+                    } else {
+                        kecamatan = kecamatan_lainnya
+                    }
                     
-                    if(tgl_bergabung == "" || nama_toko == "" || alamat == "" || pj == ""|| no_hp == ""){
+                    if(tgl_bergabung == "" || nama_toko == "" || alamat == "" || pj == ""|| no_hp == "" || kecamatan == ""){
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Gagal merubah data toko, lengkapi isi form terlebih dahulu'
                         })
                     } else {
-                        data = {id_toko: id_toko, tgl_bergabung: tgl_bergabung, nama_toko: nama_toko, alamat: alamat, pj: pj, no_hp: no_hp}
+                        data = {id_toko: id_toko, tgl_bergabung: tgl_bergabung, nama_toko: nama_toko, alamat: alamat, pj: pj, no_hp: no_hp, kecamatan: kecamatan}
                         let result = ajax("<?= base_url()?>toko/edit_toko", "POST", data);
 
                         if(result == 1){
                             reload_data();
                             $("#formAddToko").trigger("reset");
+
+                            list_kecamatan();
+
+                            $("#kecamatan_edit").val(kecamatan);
+                            $("#kecamatan_lainnya_edit").prop("disabled", true);
+                            $("#kecamatan_lainnya_edit").prop("required", false);
+                            $("#kecamatan_lainnya_edit").val("");
 
                             Swal.fire({
                                 position: 'center',
@@ -229,7 +316,7 @@
                     html += `
                         <div class="form-group text-gray-900">
                             <div class="custom-control custom-checkbox small">
-                                <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`" class="custom-control-input" id="`+data.id_barang+`">
+                                <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`" class="custom-control-input" id="`+data.id_barang+`">
                                 <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
                             </div>
                         </div>
@@ -256,13 +343,28 @@
                         data = data.split("|");
                         id_barang = data[0];
                         kode_barang = data[1];
+                        bagi_hasil = data[2];
+                        harga = data[3];
                         
-                        html += `<div class="input-group input-group-sm mb-1">
+                        html += `
+                        <div class="input-group input-group-sm">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">`+i+`. `+kode_barang+`</span>
                             </div>
                             <input type="hidden" name="id_barang_pengiriman" value="`+id_barang+`">
                             <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="0">
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Harga</span>
+                            </div>
+                            <input type="text" name="harga_jual" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+harga+`">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">BH</span>
+                            </div>
+                            <input type="text" name="bh" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+bagi_hasil+`">
                         </div>`;
 
                         i++;
@@ -312,21 +414,41 @@
                                 id_barang.push($(this).val());
                             });
                             
-                            // untuk cek jik ada qty yang 0
-                            let errorQty = 0;
+                            // untuk cek jik ada field yang tak diisi atau bernilai tidak sesuai
+                            let eror = 0;
 
                             qty = new Array();
                             $.each($("input[name='qty']"), function(){
                                 qty.push($(this).val());
 
                                 if($(this).val() == 0 || $(this).val() == ""){
-                                    errorQty = 1;
+                                    eror = 1;
                                 }
 
                             });
 
-                            if(errorQty == 0){
-                                data = {id_toko: id_toko, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan, id_barang:id_barang, qty:qty}
+                            harga = new Array();
+                            $.each($("input[name='harga_jual']"), function(){
+                                harga.push($(this).val());
+
+                                if($(this).val() == "Rp. 0" || $(this).val() == ""){
+                                    eror = 1;
+                                }
+
+                            });
+
+                            bh = new Array();
+                            $.each($("input[name='bh']"), function(){
+                                bh.push($(this).val());
+
+                                if($(this).val() == ""){
+                                    eror = 1;
+                                }
+
+                            });
+
+                            if(eror == 0){
+                                data = {id_toko: id_toko, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan, id_barang:id_barang, qty:qty, harga:harga, bh:bh}
                                 let result = ajax("<?= base_url()?>toko/add_pengiriman", "POST", data);
 
                                 if(result == 1){
@@ -376,6 +498,10 @@
 
             return result;
         }
+        
+        $(document).on("keyup", ".rupiah", function(){
+            $(this).val(formatRupiah(this.value, 'Rp. '))
+        })
     })
 
 </script>

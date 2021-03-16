@@ -83,8 +83,8 @@ class Toko extends CI_Controller {
             $data['pengiriman'] = [];
             foreach ($pengiriman as $i => $pengiriman) {
                 $data['pengiriman'][$i] = $pengiriman;
-                $data['pengiriman'][$i]['tgl_pengiriman'] = date("d-M-y", strtotime($pengiriman['tgl_pengiriman']));
-                $data['pengiriman'][$i]['tgl_pengambilan'] = date("d-M-y", strtotime($pengiriman['tgl_pengambilan']));
+                $data['pengiriman'][$i]['tgl_pengiriman'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengiriman']));
+                $data['pengiriman'][$i]['tgl_pengambilan'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengambilan']));
             }
 
 
@@ -96,17 +96,27 @@ class Toko extends CI_Controller {
         public function add_toko(){
             $penjual = $this->_data_penjual();
 
+            $kecamatan = $this->input->post('kecamatan');
+
             $data = [
                 "tgl_bergabung" => $this->input->post("tgl_bergabung"),
                 "nama_toko" => $this->input->post("nama_toko"),
                 "alamat" => $this->input->post("alamat"),
                 "pj" => $this->input->post("pj"),
                 "no_hp" => $this->input->post("no_hp"),
-                "id_penjual" => $penjual['id_penjual']
+                "id_penjual" => $penjual['id_penjual'],
+                "kecamatan" => $kecamatan,
             ];
 
             $data = $this->Main_model->add_data("toko", $data);
             if($data){
+
+                // cek kecamatan jika tidak ada inputkan
+                $cek_kecamatan = $this->Main_model->get_one("kecamatan", ["kecamatan" => $kecamatan, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+                if(!$cek_kecamatan){
+                    $this->Main_model->add_data("kecamatan", ["kecamatan" => $kecamatan, "id_penjual" => $penjual['id_penjual']]);
+                }
+
                 echo json_encode("1");
             } else {
                 echo json_encode("0");
@@ -144,6 +154,7 @@ class Toko extends CI_Controller {
                     "pj" => $toko['pj'],
                     "no_hp" => $toko['no_hp'],
                     "alamat" => $toko['alamat'],
+                    "kecamatan" => $toko['kecamatan'],
                     "tgl_pengiriman" => $this->input->post("tgl_pengiriman"),
                     "tgl_pengambilan" => $this->input->post("tgl_pengambilan"),
                     "status" => "Proses",
@@ -154,6 +165,8 @@ class Toko extends CI_Controller {
                 
                 $id_barang = $this->input->post("id_barang");
                 $qty = $this->input->post("qty");
+                $harga = $this->input->post("harga");
+                $bh = $this->input->post("bh");
 
                 foreach ($id_barang as $i => $id_barang) {
                     if($qty[$i] != 0) {
@@ -162,6 +175,8 @@ class Toko extends CI_Controller {
                             "id_barang" => $id_barang,
                             "kirim" => $qty[$i],
                             "kembali" => "0",
+                            "harga" => $this->Main_model->nominal($harga[$i]),
+                            "bagi_hasil" => $this->Main_model->nominal($bh[$i]),
                             "id_penjual" => $penjual['id_penjual']
                         ];
     
@@ -205,6 +220,8 @@ class Toko extends CI_Controller {
                 
             $id_barang = $this->input->post("id_barang");
             $qty = $this->input->post("qty");
+            $harga = $this->input->post("harga");
+            $bh = $this->input->post("bh");
 
             $success = 0;
 
@@ -214,6 +231,8 @@ class Toko extends CI_Controller {
                         "id_pengiriman" => $id_pengiriman,
                         "id_barang" => $id_barang,
                         "kirim" => $qty[$i],
+                        "harga" => $this->Main_model->nominal($harga[$i]),
+                        "bagi_hasil" => $this->Main_model->nominal($bh[$i]),
                         "kembali" => "0",
                         "id_penjual" => $penjual['id_penjual']
                     ];
@@ -247,8 +266,10 @@ class Toko extends CI_Controller {
 
             $pengiriman = $this->Main_model->get_one("pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual']]);
             $data['pengiriman'] = $pengiriman;
-            $data['pengiriman']['tgl_pengiriman_format'] = $pengiriman['tgl_pengiriman'];
-            $data['pengiriman']['tgl_pengambilan_format'] = $pengiriman['tgl_pengambilan'];
+            // $data['pengiriman']['tgl_pengiriman_format'] = $pengiriman['tgl_pengiriman'];
+            // $data['pengiriman']['tgl_pengiriman_format'] = date('Y-m-d h:i A', strtotime($pengiriman['tgl_pengiriman']));
+            $data['pengiriman']['tgl_pengiriman_format'] = date('Y-m-d', strtotime($pengiriman['tgl_pengiriman'])) . "T" . date('h:i', strtotime($pengiriman['tgl_pengiriman']));
+            $data['pengiriman']['tgl_pengambilan_format'] = date('Y-m-d', strtotime($pengiriman['tgl_pengambilan'])) . "T" . date('h:i', strtotime($pengiriman['tgl_pengambilan']));
             $data['pengiriman']['tgl_pengiriman'] = date("d-M-y", strtotime($pengiriman['tgl_pengiriman']));
             $data['pengiriman']['tgl_pengambilan'] = date("d-M-y", strtotime($pengiriman['tgl_pengambilan']));
             $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
@@ -312,12 +333,22 @@ class Toko extends CI_Controller {
 
             echo json_encode($data);
         }
+
+        // list kecamatan untuk data toko 
+        public function get_all_kecamatan(){
+
+            $penjual = $this->_data_penjual();
+            $data = $this->Main_model->get_all("kecamatan", ["hapus" => 0, "id_penjual" => $penjual['id_penjual']], "kecamatan");
+            echo json_encode($data);
+
+        }
     // get 
 
     // edit 
         public function edit_toko(){
             $penjual = $this->_data_penjual();
             $id_toko = $this->input->post("id_toko");
+            $kecamatan = $this->input->post('kecamatan');
             
             $data = [
                 "tgl_bergabung" => $this->input->post("tgl_bergabung"),
@@ -325,10 +356,19 @@ class Toko extends CI_Controller {
                 "alamat" => $this->input->post("alamat"),
                 "pj" => $this->input->post("pj"),
                 "no_hp" => $this->input->post("no_hp"),
+                "kecamatan" => $kecamatan,
             ];
 
             $data = $this->Main_model->edit_data("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']], $data);
+
             if($data){
+
+                // cek kecamatan jika tidak ada inputkan
+                $cek_kecamatan = $this->Main_model->get_one("kecamatan", ["kecamatan" => $kecamatan, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+                if(!$cek_kecamatan){
+                    $this->Main_model->add_data("kecamatan", ["kecamatan" => $kecamatan, "id_penjual" => $penjual['id_penjual']]);
+                }
+
                 echo json_encode("1");
             } else {
                 echo json_encode("0");
@@ -358,10 +398,18 @@ class Toko extends CI_Controller {
             $penjual = $this->_data_penjual();
             $id = $this->input->post("id_detail");
             $qty = $this->input->post("qty");
+            $harga = $this->input->post("harga");
+            $bh = $this->input->post("bh");
             $success = 0;
 
             foreach ($id as $i => $id) {
-                $data = $this->Main_model->edit_data("detail_pengiriman", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["kirim" => $qty[$i]]);
+                $data = [
+                    "kirim" => $qty[$i],
+                    "harga" => $this->Main_model->nominal($harga[$i]),
+                    "bagi_hasil" => $this->Main_model->nominal($bh[$i]),
+                ];
+
+                $this->Main_model->edit_data("detail_pengiriman", ["id" => $id, "id_penjual" => $penjual['id_penjual']], $data);
                 $success = 1;
             }
 

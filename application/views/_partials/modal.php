@@ -12,23 +12,32 @@
             <form class="user" id="formAddToko">
                 <div class="form-group">
                     <label for="tgl_bergabung" class="col-form-label">Tgl. Bergabung</label>
-                    <input type="date" name="tgl_bergabung" class="form-control form-control-user" id="tgl_bergabung_add" required>
+                    <input type="date" name="tgl_bergabung" class="form-control form-control-sm" id="tgl_bergabung_add" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_add" required>
+                    <input type="text" name="nama_toko" class="form-control form-control-sm" id="nama_toko_add" required>
                 </div>
                 <div class="form-group">
                     <label for="alamat" class="col-form-label">Alamat Toko</label>
-                    <textarea name="alamat" id="alamat_add" class="form-control form-control-user" required></textarea>
+                    <textarea name="alamat" id="alamat_add" class="form-control form-control-sm" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="kecamatan" class="col-form-label">Kecamatan</label>
+                    <select name="kecamatan" id="kecamatan_add" class="form-control form-control-sm" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kecamatan">Kecamatan Lainnya</label>
+                    <input type="text" name="kecamatan_lainnya" id="kecamatan_lainnya_add" class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group">
                     <label for="pj" class="col-form-label">Penanggung Jawab</label>
-                    <input type="text" name="pj" class="form-control form-control-user" id="pj_add" required>
+                    <input type="text" name="pj" class="form-control form-control-sm" id="pj_add" required>
                 </div>
                 <div class="form-group">
                     <label for="no_hp" class="col-form-label">No. Handphone</label>
-                    <input type="text" name="no_hp" class="form-control form-control-user" id="no_hp_add" required>
+                    <input type="text" name="no_hp" class="form-control form-control-sm" id="no_hp_add" required>
                 </div>
             </form>
         </div>
@@ -57,23 +66,32 @@
                 <input type="hidden" name="id_toko" id="id_toko_edit">
                 <div class="form-group">
                     <label for="tgl_bergabung" class="col-form-label">Tgl. Bergabung</label>
-                    <input type="date" name="tgl_bergabung" class="form-control form-control-user" id="tgl_bergabung_edit" required>
+                    <input type="date" name="tgl_bergabung" class="form-control form-control-sm" id="tgl_bergabung_edit" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_edit" required>
+                    <input type="text" name="nama_toko" class="form-control form-control-sm" id="nama_toko_edit" required>
                 </div>
                 <div class="form-group">
                     <label for="alamat" class="col-form-label">Alamat Toko</label>
-                    <textarea name="alamat" id="alamat_edit" class="form-control form-control-user" required></textarea>
+                    <textarea name="alamat" id="alamat_edit" class="form-control form-control-sm" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="kecamatan" class="col-form-label">Kecamatan</label>
+                    <select name="kecamatan" id="kecamatan_edit" class="form-control form-control-sm" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kecamatan">Kecamatan Lainnya</label>
+                    <input type="text" name="kecamatan_lainnya" id="kecamatan_lainnya_edit" class="form-control form-control-sm" required>
                 </div>
                 <div class="form-group">
                     <label for="pj" class="col-form-label">Penanggung Jawab</label>
-                    <input type="text" name="pj" class="form-control form-control-user" id="pj_edit" required>
+                    <input type="text" name="pj" class="form-control form-control-sm" id="pj_edit" required>
                 </div>
                 <div class="form-group">
                     <label for="no_hp" class="col-form-label">No. Handphone</label>
-                    <input type="text" name="no_hp" class="form-control form-control-user" id="no_hp_edit" required>
+                    <input type="text" name="no_hp" class="form-control form-control-sm" id="no_hp_edit" required>
                 </div>
             </form>
         </div>
@@ -101,15 +119,23 @@
             <form class="user" id="formAddBarang">
                 <div class="form-group">
                     <label for="tgl_rilis" class="col-form-label">Tgl. Rilis</label>
-                    <input type="date" name="tgl_rilis" class="form-control form-control-user" id="tgl_rilis_add" required>
+                    <input type="date" name="tgl_rilis" class="form-control form-control-sm" id="tgl_rilis_add" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_barang" class="col-form-label">Nama Barang</label>
-                    <input type="text" name="nama_barang" class="form-control form-control-user" id="nama_barang_add" required>
+                    <input type="text" name="nama_barang" class="form-control form-control-sm" id="nama_barang_add" required>
                 </div>
                 <div class="form-group">
                     <label for="kode_barang" class="col-form-label">Kode Barang</label>
-                    <input type="text" name="kode_barang" class="form-control form-control-user" id="kode_barang_add" required>
+                    <input type="text" name="kode_barang" class="form-control form-control-sm" id="kode_barang_add" required>
+                </div>
+                <div class="form-group">
+                    <label for="harga" class="col-form-label">Harga Barang</label>
+                    <input type="text" name="harga" class="form-control form-control-sm" id="harga_add" required>
+                </div>
+                <div class="form-group">
+                    <label for="bagi_hasil" class="col-form-label">Bagi Hasil</label>
+                    <input type="text" name="bagi_hasil" class="form-control form-control-sm" id="bagi_hasil_add" required>
                 </div>
             </form>
         </div>
@@ -138,15 +164,23 @@
                 <input type="hidden" name="id_barang" id="id_barang_edit">
                 <div class="form-group">
                     <label for="tgl_rilis" class="col-form-label">Tgl. Rilis</label>
-                    <input type="date" name="tgl_rilis" class="form-control form-control-user" id="tgl_rilis_edit" required>
+                    <input type="date" name="tgl_rilis" class="form-control form-control-sm" id="tgl_rilis_edit" required>
                 </div>
                 <div class="form-group">
                     <label for="nama_barang" class="col-form-label">Nama Barang</label>
-                    <input type="text" name="nama_barang" class="form-control form-control-user" id="nama_barang_edit" required>
+                    <input type="text" name="nama_barang" class="form-control form-control-sm" id="nama_barang_edit" required>
                 </div>
                 <div class="form-group">
                     <label for="kode_barang" class="col-form-label">Kode Barang</label>
-                    <input type="text" name="kode_barang" class="form-control form-control-user" id="kode_barang_edit" required>
+                    <input type="text" name="kode_barang" class="form-control form-control-sm" id="kode_barang_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="harga_edit" class="col-form-label">Harga Barang</label>
+                    <input type="text" name="harga" class="form-control form-control-sm" id="harga_edit" required>
+                </div>
+                <div class="form-group">
+                    <label for="bagi_hasil_edit" class="col-form-label">Bagi Hasil</label>
+                    <input type="text" name="bagi_hasil" class="form-control form-control-sm" id="bagi_hasil_edit" required>
                 </div>
             </form>
         </div>
@@ -174,7 +208,7 @@
             <form action="" class="user">
                 <div class="form-group">
                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                    <input type="text" name="nama_toko" id="nama_toko_pengiriman" class="form-control form-control-user" readonly>
+                    <input type="text" name="nama_toko" id="nama_toko_pengiriman" class="form-control form-control-sm" readonly>
                 </div>
             </form>
             <form class="user" id="listAllBarang">
@@ -191,11 +225,11 @@
                 <input type="hidden" name="id_toko" id="id_toko_pengiriman">
                 <div class="form-group">
                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
-                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_add" required>
+                    <input type="datetime-local" name="tgl_pengiriman" class="form-control form-control-sm" id="tgl_pengiriman_add" required>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
-                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_add" required>
+                    <input type="datetime-local" name="tgl_pengambilan" class="form-control form-control-sm" id="tgl_pengambilan_add" required>
                 </div>
                 <div class="form-group">
                     <p><b>List Pengiriman Barang</b></p>
@@ -249,7 +283,7 @@
                             <a href="javascript:void(0)" class='nav-link btn-form-2'><i class="fas fa-edit"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:void(0)" class='nav-link btn-form-3'><i class="fas fa-times"></i></a>
+                            <a href="javascript:void(0)" class='nav-link btn-form-3'><i class="fas fa-plus"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -264,15 +298,15 @@
                                 <input type="hidden" name="id_pengiriman" id="id_pengiriman_edit" readonly>
                                 <div class="form-group">
                                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                                    <input type="text" name="nama_toko" class="form-control form-control-user nama_toko_edit_pengiriman" readonly>
+                                    <input type="text" name="nama_toko" class="form-control form-control-sm nama_toko_edit_pengiriman" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
-                                    <input type="date" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_edit" required>
+                                    <input type="datetime-local" name="tgl_pengiriman" class="form-control form-control-sm" id="tgl_pengiriman_edit" value="2013-03-18T13:00" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
-                                    <input type="date" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_edit" required>
+                                    <input type="datetime-local" name="tgl_pengambilan" class="form-control form-control-sm" id="tgl_pengambilan_edit" required>
                                 </div>
                             </form>
                         </div>
@@ -287,7 +321,7 @@
                             <form action="" class="user">
                                 <div class="form-group">
                                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                                    <input type="text" name="nama_toko" class="form-control form-control-user nama_toko_edit_pengiriman" readonly>
+                                    <input type="text" name="nama_toko" class="form-control form-control-sm nama_toko_edit_pengiriman" readonly>
                                 </div>
                             </form>
 
@@ -359,15 +393,15 @@
                 <input type="hidden" name="id_pengiriman" id="id_pengiriman_pengambilan">
                 <div class="form-group">
                     <label for="nama_toko" class="col-form-label">Nama Toko</label>
-                    <input type="text" name="nama_toko" class="form-control form-control-user" id="nama_toko_pengambilan" readonly>
+                    <input type="text" name="nama_toko" class="form-control form-control-sm" id="nama_toko_pengambilan" readonly>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
-                    <input type="text" name="tgl_pengiriman" class="form-control form-control-user" id="tgl_pengiriman_pengambilan" readonly>
+                    <input type="text" name="tgl_pengiriman" class="form-control form-control-sm" id="tgl_pengiriman_pengambilan" readonly>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
-                    <input type="text" name="tgl_pengambilan" class="form-control form-control-user" id="tgl_pengambilan_pengambilan" readonly>
+                    <input type="text" name="tgl_pengambilan" class="form-control form-control-sm" id="tgl_pengambilan_pengambilan" readonly>
                 </div>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">

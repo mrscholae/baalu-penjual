@@ -32,6 +32,8 @@
                             <div class="card-body text-gray-900">
                                 <p><i class="fa fa-id-card mr-3"></i> `+data.kode_barang+`</p>
                                 <p><i class="fa fa-calendar-alt mr-3"></i> `+data.tgl_rilis+`</p>
+                                <p><i class="fa fa-dollar-sign mr-4"></i> `+data.harga+`</p>
+                                <p><i class="fa fa-handshake mr-3"></i> `+data.bagi_hasil+`</p>
                             </div>
                         </div>
                     </div>`
@@ -60,15 +62,17 @@
                     let tgl_rilis = $("#tgl_rilis_add").val();
                     let nama_barang = $("#nama_barang_add").val();
                     let kode_barang = $("#kode_barang_add").val();
+                    let harga = $("#harga_add").val();
+                    let bagi_hasil = $("#bagi_hasil_add").val();
                     
-                    if(tgl_rilis == "" || nama_barang == "" || kode_barang == ""){
+                    if(tgl_rilis == "" || nama_barang == "" || kode_barang == "" || harga == "" || bagi_hasil == ""){
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Gagal menambahkan data barang, lengkapi isi form terlebih dahulu'
                         })
                     } else {
-                        data = {tgl_rilis: tgl_rilis, nama_barang: nama_barang, kode_barang: kode_barang}
+                        data = {tgl_rilis: tgl_rilis, nama_barang: nama_barang, kode_barang: kode_barang, harga: harga, bagi_hasil: bagi_hasil}
                         let result = ajax("<?= base_url()?>barang/add_barang", "POST", data);
 
                         if(result == 1){
@@ -102,6 +106,8 @@
             $("#nama_barang_edit").val(result.nama_barang);
             $("#kode_barang_edit").val(result.kode_barang);
             $("#tgl_rilis_edit").val(result.tgl_rilis);
+            $("#harga_edit").val(formatRupiah(result.harga, 'Rp. '));
+            $("#bagi_hasil_edit").val(formatRupiah(result.bagi_hasil, 'Rp. '));
             $("#id_barang_edit").val(result.id_barang);
         })
 
@@ -119,15 +125,17 @@
                     let tgl_rilis = $("#tgl_rilis_edit").val();
                     let nama_barang = $("#nama_barang_edit").val();
                     let kode_barang = $("#kode_barang_edit").val();
+                    let harga = $("#harga_edit").val();
+                    let bagi_hasil = $("#bagi_hasil_edit").val();
                     
-                    if(tgl_rilis == "" || nama_barang == "" || kode_barang == ""){
+                    if(tgl_rilis == "" || nama_barang == "" || kode_barang == "" || harga == "" || bagi_hasil == ""){
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Gagal merubah data barang, lengkapi isi form terlebih dahulu'
                         })
                     } else {
-                        data = {id_barang: id_barang, tgl_rilis: tgl_rilis, nama_barang: nama_barang, kode_barang: kode_barang}
+                        data = {id_barang: id_barang, tgl_rilis: tgl_rilis, nama_barang: nama_barang, kode_barang: kode_barang, harga: harga, bagi_hasil: bagi_hasil}
                         let result = ajax("<?= base_url()?>barang/edit_barang", "POST", data);
 
                         if(result == 1){
@@ -208,6 +216,15 @@
 
             return result;
         }
+
+        $("input[name=harga]").keyup(function(){
+            $(this).val(formatRupiah(this.value, 'Rp. '))
+        })
+        
+        $("input[name=bagi_hasil]").keyup(function(){
+            $(this).val(formatRupiah(this.value, 'Rp. '))
+        })
+        
     })
 
 </script>
