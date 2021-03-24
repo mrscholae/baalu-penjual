@@ -233,7 +233,7 @@
                     html += `
                         <div class="form-group text-gray-900">
                             <div class="custom-control custom-checkbox small">
-                                <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`" class="custom-control-input" id="`+data.id_barang+`">
+                                <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+data.harga+`|`+data.bagi_hasil+`" class="custom-control-input" id="`+data.id_barang+`">
                                 <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
                             </div>
                         </div>
@@ -260,13 +260,28 @@
                         data = data.split("|");
                         id_barang = data[0];
                         kode_barang = data[1];
+                        bagi_hasil = data[2];
+                        harga = data[3];
                         
-                        html += `<div class="input-group input-group-sm mb-1">
+                        html += `
+                        <div class="input-group input-group-sm">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">`+i+`. `+kode_barang+`</span>
                             </div>
                             <input type="hidden" name="id_barang_pengiriman" value="`+id_barang+`">
                             <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="0">
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Harga</span>
+                            </div>
+                            <input type="text" name="harga_jual" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+formatRupiah(harga, "Rp. ")+`">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">BH</span>
+                            </div>
+                            <input type="text" name="bh" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+formatRupiah(bagi_hasil, "Rp. ")+`">
                         </div>`;
 
                         i++;
@@ -316,7 +331,7 @@
                                 id_barang.push($(this).val());
                             });
                             
-                            // untuk cek jik ada qty yang 0
+                            // untuk cek jik ada field yang tak diisi atau bernilai tidak sesuai
                             let eror = 0;
 
                             qty = new Array();
@@ -329,8 +344,28 @@
 
                             });
 
+                            harga = new Array();
+                            $.each($("input[name='harga_jual']"), function(){
+                                harga.push($(this).val());
+
+                                if($(this).val() == "Rp. 0" || $(this).val() == ""){
+                                    eror = 1;
+                                }
+
+                            });
+
+                            bh = new Array();
+                            $.each($("input[name='bh']"), function(){
+                                bh.push($(this).val());
+
+                                if($(this).val() == ""){
+                                    eror = 1;
+                                }
+
+                            });
+
                             if(eror == 0){
-                                data = {id_toko: id_toko, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan, id_barang:id_barang, qty:qty}
+                                data = {id_toko: id_toko, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan, id_barang:id_barang, qty:qty, harga:harga, bh:bh}
                                 let result = ajax("<?= base_url()?>toko/add_pengiriman", "POST", data);
 
                                 if(result == 1){
@@ -397,7 +432,7 @@
                     }
 
                     html += `
-                        <li class="list-group-item d-flex justify-content-between">
+                        <li class="list-group-item list-group-item-primary d-flex justify-content-between">
                             <span>`+i+`. `+data.kode_barang+`</span>
                             <span>
                                 <i class="fa fa-truck mr-3"></i>`+data.kirim+`
@@ -405,8 +440,14 @@
                             <span>
                                 `+kembali+`
                             </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span><i class="fa fa-dollar-sign mr-1"></i>`+formatRupiah(data.harga, "Rp. ")+`</span>
+                            <span>
+                                <i class="fa fa-handshake mr-1"></i>`+formatRupiah(data.bagi_hasil, "Rp. ")+`
+                            </span>
                         </li>`
-
+                        
                     i++;
 
                 });

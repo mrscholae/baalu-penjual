@@ -28,6 +28,16 @@ class Barang extends CI_Controller {
         // for sidebar 
         $data['sidebar'] = "barang";
 
+        // for modal 
+        $data['modal'] = ["modal_barang"];
+        
+        // for js 
+        $data['js'] = [
+            "modules/other.js", 
+            "modules/barang.js",
+            "load_data/reload_barang.js",
+        ];
+
         $this->load->view("pages/barang/list-barang", $data);
     }
 
@@ -40,6 +50,19 @@ class Barang extends CI_Controller {
                 $data[$i]['tgl_rilis'] = date("d-M-Y", strtotime($barang['tgl_rilis']));
                 $data[$i]['harga'] = $this->Main_model->rupiah($barang['harga']);
                 $data[$i]['bagi_hasil'] = $this->Main_model->rupiah($barang['bagi_hasil']);
+
+                $qty = 0;
+                $produksi = $this->Main_model->get_all("detail_produksi_barang", ["id_barang" => $barang['id_barang'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+                foreach ($produksi as $produksi) {
+                    $qty += ($produksi['berhasil'] + $produksi['gagal']);
+                }
+                
+                $pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_barang" => $barang['id_barang'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+                foreach ($pengiriman as $pengiriman) {
+                    $qty -= $pengiriman['kirim'];
+                }
+
+                $data[$i]['stok'] = $qty;
             }
 
             echo json_encode($data);
@@ -80,7 +103,7 @@ class Barang extends CI_Controller {
         public function get_all_barang(){
             $penjual = $this->_data_penjual();
 
-            $data = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual']], "nama_barang");
+            $data = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_barang");
             echo json_encode($data);
         }
     // get 
@@ -120,7 +143,7 @@ class Barang extends CI_Controller {
                 echo json_encode("0");
             }
         }
-
+    // delete 
 
     function _data_penjual(){
         $username = $this->session->userdata('username');

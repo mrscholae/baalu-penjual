@@ -1,4 +1,3 @@
-$(function() {  
     $(".btn-form-1").click(function(){
         btn_1();
     })
@@ -61,5 +60,3 @@ $(function() {
         $(".footer-2").hide();
         $(".footer-3").show();
     }
-    
-})

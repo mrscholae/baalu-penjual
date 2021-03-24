@@ -71,6 +71,24 @@
                     <i class="fas fa-plus"></i>
                 </a>
             </li>
+        <?php elseif($navbar == "Bahan"):?>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addBahan" id="alertsDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </li>
+        <?php elseif($navbar == "Pembelian"):?>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addPembelian" id="btnPlusPembelian" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </li>
+        <?php elseif($navbar == "Produksi"):?>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addProduksi" id="btnPlusProduksi" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </li>
         <?php endif;?>
     <?php endif;?>
 

@@ -10,6 +10,7 @@ class Home extends CI_Controller {
     {
         parent::__construct();
         $this->load->model("Main_model");
+        $this->load->model("Home_model");
         
         if(!$this->session->userdata('username')){
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa fa-times-circle text-danger mr-1"></i> Maaf Anda harus login terlebih dahulu<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div');
@@ -31,6 +32,11 @@ class Home extends CI_Controller {
         $data['sidebar'] = "home";
 
         $data['pengambilan'] = COUNT($this->Main_model->get_all("pengiriman", ["status" => "Proses", "hapus" => "0", "id_penjual" => $penjual['id_penjual']]));
+        
+        // alert stok bahan kurang 
+        $data['stok_bahan'] = $this->Home_model->alert_stok_bahan();
+
+        // var_dump($data['stok_bahan']);
 
         $this->load->view("pages/index", $data);
     }

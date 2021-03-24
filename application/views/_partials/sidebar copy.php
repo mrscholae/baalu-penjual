@@ -1,5 +1,5 @@
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="javascript:void(0)">
@@ -53,6 +53,27 @@
                     <span>Produksi</span>
                 </a>
             </li>
+            
+            <li class="nav-item" id="produksi">
+                <a class="nav-link" href="<?= base_url()?>produksi">
+                    <i class="fas fa-dumpster-fire"></i>
+                    <span>Produksi</span>
+                </a>
+            </li>
+            
+            <li class="nav-item" id="produksi">
+                <a class="nav-link" href="<?= base_url()?>produksi">
+                    <i class="fas fa-dumpster-fire"></i>
+                    <span>Produksi</span>
+                </a>
+            </li>
+            
+            <li class="nav-item" id="produksi">
+                <a class="nav-link" href="<?= base_url()?>produksi">
+                    <i class="fas fa-dumpster-fire"></i>
+                    <span>Produksi</span>
+                </a>
+            </li>
 
             <li class="nav-item" id="laporan">
                 <a class="nav-link" href="<?= base_url()?>laporan">
@@ -64,5 +85,10 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+            
         </ul>
         <!-- End of Sidebar -->

@@ -126,9 +126,6 @@
 
         };
 
-
-
-
         function reload_data(){
             let result = ajax("<?= base_url()?>pengambilan/ajax_pengambilan", "POST", "");
         

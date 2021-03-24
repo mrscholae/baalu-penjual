@@ -26,15 +26,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= base_url()?>assets/vendor/jquery/jquery.min.js"></script>
-    <script src="<?= base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url()?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
-    <script src="<?= base_url()?>assets/js/sb-admin-2.min.js"></script>
+    <script src="<?= base_url()?>assets/js/sb-admin-2.js"></script>
 
     <script src="<?= base_url()?>assets/js/modal.js"></script>
     <script src="<?= base_url()?>assets/js/script.js"></script>
@@ -42,13 +35,6 @@
     <script>
         $("#<?= $sidebar?>").addClass("active");
     </script>
-    <?php
-        if($navbar == "Barang") $this->load->view("../../assets/js/ajax_barang");
-        elseif($navbar == "Toko") $this->load->view("../../assets/js/ajax_toko");
-        elseif($navbar == "Detail Toko") $this->load->view("../../assets/js/detail_toko");
-        elseif($navbar == "Menunggu Pengambilan") $this->load->view("../../assets/js/ajax_pengambilan");
-        
-    ?>
 </body>
 
 </html>

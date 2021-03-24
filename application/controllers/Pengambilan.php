@@ -32,6 +32,16 @@ class Pengambilan extends CI_Controller {
         // for sidebar 
         $data['sidebar'] = "home";
 
+        // for modal 
+        $data['modal'] = ["modal_pengiriman"];
+        
+        // javascript 
+        $data['js'] = [
+            "modules/other.js", 
+            // "modules/pengiriman.js",
+            "load_data/reload_pengambilan.js",
+        ];
+
         $this->load->view("pages/pengambilan/list-pengambilan", $data);
     }
 
@@ -79,7 +89,14 @@ class Pengambilan extends CI_Controller {
         $allcount = COUNT($this->Main_model->get_all("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Proses"], "tgl_pengambilan"));
     
         // Get records
-        $users_record = $this->Main_model->get_all_limit("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Proses"], "tgl_pengambilan", "ASC", $rowno, $rowperpage);
+        $record = $this->Main_model->get_all_limit("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Proses"], "tgl_pengambilan", "ASC", $rowno, $rowperpage);
+        $users_record = [];
+
+        foreach ($record as $i => $record) {
+            $users_record[$i] = $record;
+            $users_record[$i]['tgl_pengiriman'] = date("d-M-y H:i", strtotime($record['tgl_pengiriman']));
+            $users_record[$i]['tgl_pengambilan'] = date("d-M-y H:i", strtotime($record['tgl_pengambilan']));
+        }
         // $users_record = $this->Pengambilan_model->getData($rowno,$rowperpage);
      
         // Pagination Configuration
@@ -116,6 +133,7 @@ class Pengambilan extends CI_Controller {
         $data['result'] = $users_record;
         $data['row'] = $rowno;
         $data['total_rows'] = $allcount;
+        $data['total_rows_perpage'] = COUNT($users_record);
     
         echo json_encode($data);
      

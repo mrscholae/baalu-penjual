@@ -9,7 +9,7 @@
                     <label for="laporan">Laporan</label>
                     <select name="laporan" id="laporan" class="form-control form-control-md">
                         <option value="">Pilih Laporan</option>
-                        <option value="Laporan Pengiriman">Laporan Pengiriman</option>
+                        <option value="Laporan Penjualan">Laporan Penjualan</option>
                     </select>
                 </div>
                 

@@ -38,19 +38,19 @@ class Laporan extends CI_Controller {
         $tgl_awal = $this->input->post("tgl_awal");
         $tgl_akhir = $this->input->post("tgl_akhir");
 
-        if($laporan == "Laporan Pengiriman"){
+        if($laporan == "Laporan Penjualan"){
             
-            $filename = "laporan_pengiriman_{$tgl_awal}_{$tgl_akhir}";
+            $filename = "laporan_penjualan_{$tgl_awal}_{$tgl_akhir}";
             
             header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             header('Content-Disposition: attachment;filename="'.$filename.'.xls"');
             
-            $data = $this->Laporan_model->laporanPengiriman();
+            $data = $this->Laporan_model->laporanPenjualan();
             
-            $data['title'] = "Laporan Pengiriman " . date("d-M-y", strtotime($tgl_awal)) . " - " . date("d-M-y", strtotime($tgl_akhir));
+            $data['title'] = "Laporan Penjualan " . date("d-M-y", strtotime($tgl_awal)) . " - " . date("d-M-y", strtotime($tgl_akhir));
             
-            $this->load->view('pages/laporan/cetak-pengiriman', $data); 
-        } elseif($laporan == "Laporan Penjualan"){
+            $this->load->view('pages/laporan/cetak-penjualan', $data); 
+        } elseif($laporan == "Laporan s"){
             
         }
     }
