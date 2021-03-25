@@ -89,9 +89,31 @@ class Main_model extends CI_MODEL{
         return $this->db->get()->result_array();
     }
 
+    public function get_all_join_table_group($table1, $table2, $key, $where, $group, $join="right"){
+        $this->db->from($table1);
+        $this->db->join($table2, "$table1.$key = $table2.$key", $join);
+        if($where)
+            $this->db->where($where);
+        if($group)
+            $this->db->group_by($group);
+        return $this->db->get()->result_array();
+    }
+
+    public function select_get_all_join_table_group($select, $table1, $table2, $key, $where, $group, $join="right"){
+        if($select)
+            $this->db->select($select);
+        $this->db->from($table1);
+        $this->db->join($table2, "$table1.$key = $table2.$key", $join);
+        if($where)
+            $this->db->where($where);
+        if($group)
+            $this->db->group_by($group);
+        return $this->db->get()->result_array();
+    }
+
 
     // other function 
-    public function rupiah($angka){           
+    public function rupiah($angka){
         $hasil_rupiah = "Rp " . number_format($angka,0,',','.');
         return $hasil_rupiah;
     }

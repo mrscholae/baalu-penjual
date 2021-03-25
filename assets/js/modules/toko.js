@@ -240,3 +240,55 @@
                 }
             })
         })
+
+        $(document).on("click", ".rekapPenjualan", function(){
+            let form = "#rekapPenjualan";
+            let id_toko = $(this).data("id");
+
+            let data = {id_toko:id_toko};
+
+            let result = ajax(url_base+"toko/get_rekap_penjualan", "POST", data);
+
+            console.log(result);
+
+            html = "";
+
+            html += `
+                <ul class="list-group text-gray-900">
+                    <li class="list-group-item list-group-item-info"><i class="fa fa-mail mr-1"></i>Data Toko</li>
+                    <li class="list-group-item">
+                        <p><i class="fa fa-store mr-3"></i>`+result.toko.nama_toko+`</p>
+                        <p><i class="fa fa-map-marker-alt mr-4"></i>`+result.toko.alamat+`</p>
+                        <p><i class="fa fa-map-signs mr-3"></i>`+result.toko.kecamatan+`</p>
+                        <p><i class="fa fa-truck mr-3"></i>`+result.toko.pengiriman+` pengiriman (selesai)</p>
+                    </li>
+                </ul>`;
+
+            $(form+" .dataToko").html(html)
+
+            html = "";
+            if(result.barang.length != 0){
+                i = 1;
+                result.barang.forEach(data => {
+                    html += `
+                        <li class="list-group-item list-group-item-primary d-flex justify-content-between">
+                            <span>`+i+`. `+data.nama_barang+`</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-center">
+                            <span class="mr-3">
+                                <i class="fa fa-truck mr-2"></i>`+data.total_kirim+`
+                            </span>
+                            <span>
+                                <i class="fa fa-truck-pickup fa-flip-horizontal mr-2"></i>`+data.total_retur+`
+                            </span>
+                        </li>`
+                        
+                    i++;
+
+                });
+            } else {
+                html += ``
+            }
+
+            $(form+" .dataPenjualan").html(html)
+        })

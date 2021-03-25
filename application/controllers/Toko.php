@@ -10,6 +10,7 @@ class Toko extends CI_Controller {
     {
         parent::__construct();
         $this->load->model("Main_model");
+        $this->load->model("Other_model");
         
         if(!$this->session->userdata('username')){
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa fa-times-circle text-danger mr-1"></i> Maaf Anda harus login terlebih dahulu<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div');
@@ -387,6 +388,28 @@ class Toko extends CI_Controller {
 
             echo json_encode($data);
         }
+
+        // rekap penjualan toko 
+        public function get_rekap_penjualan(){
+            $penjual = $this->_data_penjual();
+            $id_toko = $this->input->post("id_toko");
+
+            $barang = $this->Main_model->select_get_all_join_table_group("SUM(kirim) as total_kirim, SUM(kembali) as total_retur, id_barang", "pengiriman", "detail_pengiriman", "id_pengiriman", ["id_toko" => $id_toko, "status" => "Selesai", "pengiriman.id_penjual" => $penjual['id_penjual']], "id_barang");
+
+            $data['barang'] = [];
+            foreach ($barang as $i => $barang) {
+                $detail_barang = $this->Main_model->get_one("barang", ["id_barang" => $barang['id_barang'], "id_penjual" => $penjual['id_penjual']]);
+                $data['barang'][$i] = $barang;
+                $data['barang'][$i]['nama_barang'] = $detail_barang['nama_barang'];
+            }
+
+            $data['barang'] = $this->Other_model->sortArray($data['barang'], 'total_kirim', SORT_DESC);
+
+            $data['toko'] = $this->Main_model->get_one("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $data['toko']['pengiriman'] = COUNT($this->Main_model->get_all("pengiriman", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Selesai"]));
+
+            echo json_encode($data);
+        }
     // get 
 
     // edit 
@@ -527,7 +550,6 @@ class Toko extends CI_Controller {
 
         return $data;
     }
-
 }
 
 /* End of file Toko.php */

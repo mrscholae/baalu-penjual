@@ -10,8 +10,10 @@ function reload_data(){
         result.forEach(data => {
             if(data.pengiriman == 0){
                 reload = "";
+                best_seller = "";
             } else {
                 reload = `<a href="#addPengiriman" data-toggle="modal" class="btn btn-circle btn-success mr-1 addPengirimanUlang" data-id="`+data.id_toko+`|`+data.nama_toko+`"><i class="fa fa-redo-alt"></i></a>`;
+                best_seller = `<a href="#rekapPenjualan" data-toggle="modal" class="btn btn-circle btn-warning mr-1 rekapPenjualan" data-id="`+data.id_toko+`|`+data.nama_toko+`"><i class="fa fa-star"></i></a>`;
             }
 
             html += `
@@ -40,7 +42,8 @@ function reload_data(){
                             <div class="d-flex justify-content-center mt-1">
                                 <a href="#addPengiriman" data-toggle="modal" class="btn btn-circle btn-success mr-1 addPengiriman" data-id="`+data.id_toko+`|`+data.nama_toko+`"><i class="fa fa-truck"></i></a>
                                 `+reload+`
-                                <a href="`+url_base+`toko/detail/`+data.link_toko+`" class="btn btn-circle btn-info"><i class="fa fa-info"></i></a>
+                                <a href="`+url_base+`toko/detail/`+data.link_toko+`" class="btn btn-circle btn-info mr-1"><i class="fa fa-info"></i></a>
+                                `+best_seller+`
                             </div>
                         </div>
                     </div>

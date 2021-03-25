@@ -329,3 +329,75 @@
         </div>
     </div>
 </div>
+
+<!-- modal edit produksi bahan -->
+<div class="modal fade" id="editProduksiBahan" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="editProduksiBahanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProduksiBahanLabel">Edit Produksi Bahan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class='nav-link active btn-form-1'><i class="fas fa-edit"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)" class='nav-link btn-form-2'><i class="fas fa-plus"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body text-gray-900 cus-font">
+
+                        <input type="hidden" name="id_produksi">
+
+                        <div class="card form-1">
+                            <div class="card-header text-primary">
+                                <strong>Data Bahan</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="listItem"></div>
+                            </div>
+                        </div>
+
+                        <div class="card form-2">
+                            <div class="card-header text-primary">
+                                <strong>Tambah Bahan</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="listItem2"></div>
+                                <div class="listItem3"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer-1">
+                <div class="modal-footer">
+                    <form action="" class="user">
+                        <span>
+                            <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-success btn-user btnSimpan1">Simpan</button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-2">
+                <div class="modal-footer">
+                    <form action="" class="user">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-success btn-user btnNext">next <i class="fa fa-arrow-right ml-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -420,6 +420,46 @@ class Produksi extends CI_Controller {
 
             echo json_encode($data);
         }
+
+        // bahan yang dihasilkan pada produksi 
+        public function get_produksi_bahan(){
+            $id_produksi = $this->input->post("id_produksi");
+            $penjual = $this->_data_penjual();
+
+            $data = $this->Main_model->get_all("detail_produksi_bahan", ["id_produksi" => $id_produksi, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+
+            echo json_encode($data);
+        }
+
+        // bahan yang tidak dihasilkan pada produksi
+        public function get_not_produksi_bahan(){
+
+            $penjual = $this->_data_penjual();
+            $id_produksi = $this->input->post("id_produksi");
+
+            // tampilkan seluruh bahan 
+            $a = [];
+            $b = [];
+            $data = [];
+            
+            // produksi bahan 
+            $y = $this->Main_model->get_all("detail_produksi_bahan", ["id_produksi" => $id_produksi, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+            foreach ($y as $i => $y) {
+                $b[$i] = $y['id_bahan'];
+            }
+
+            // calon barang produksi
+            $x = $this->Main_model->get_all("bahan", ["hapus" => "0", "id_penjual" => $penjual['id_penjual'], "jenis" => "Produksi"], "nama_bahan");
+            $i = 0;
+            foreach ($x as $x) {
+                if(!in_array($x['id_bahan'], $b)){
+                    $data[$i] = $x;
+                    $i++;
+                }
+            }
+
+            echo json_encode($data);
+        }
     // get 
 
     // edit 
@@ -489,6 +529,29 @@ class Produksi extends CI_Controller {
                 echo json_encode("0");
             }
         }
+
+        public function edit_produksi_bahan(){
+            
+            $penjual = $this->_data_penjual();
+            $id = $this->input->post("id_detail");
+            $qty = $this->input->post("qty");
+            $success = 0;
+
+            foreach ($id as $i => $id) {
+                $data = [
+                    "qty" => $qty[$i],
+                ];
+
+                $this->Main_model->edit_data("detail_produksi_bahan", ["id" => $id, "id_penjual" => $penjual['id_penjual']], $data);
+                $success = 1;
+            }
+
+            if($success == 1){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
         
     // edit 
 
@@ -525,6 +588,19 @@ class Produksi extends CI_Controller {
             $penjual = $this->_data_penjual();
 
             $data = $this->Main_model->edit_data("detail_produksi_barang", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
+            
+            if($data){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
+
+        public function delete_produksi_bahan(){
+            $id = $this->input->post("id");
+            $penjual = $this->_data_penjual();
+
+            $data = $this->Main_model->edit_data("detail_produksi_bahan", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
             
             if($data){
                 echo json_encode("1");

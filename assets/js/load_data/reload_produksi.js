@@ -54,12 +54,16 @@ function createTable(data,sno){
         }
         
         if(data[index].tipe_produksi == "Produksi Barang") {
+            color = "list-group-item-success";
+            edit_hasil = `<a class="dropdown-item btnEditBarang" href="#editBarangProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Hasil</a>`;
             if(data[index].produksi_barang == 0){
                 barang = `<a href="#addProduksiBarang" data-toggle="modal" class="btn btn-circle btn-info addProduksiBarang" data-id="`+data[index].id_produksi+`"><i class="fa fa-box"></i></a>`;
             } else {
                 barang = '';
             }
         } else if(data[index].tipe_produksi == "Produksi Bahan") {
+            color = "list-group-item-warning";
+            edit_hasil = `<a class="dropdown-item btnEditProduksiBahan" href="#editProduksiBahan" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Hasil</a>`;
             if(data[index].produksi_bahan == 0){
                 barang = `<a href="#addProduksiBahan" data-toggle="modal" class="btn btn-circle btn-info addProduksiBahan" data-id="`+data[index].id_produksi+`"><i class="fa fa-box"></i></a>`;
             } else {
@@ -71,7 +75,7 @@ function createTable(data,sno){
         html += `
         <div class="col-12 col-md-4">
             <div class="card shadow mb-4">
-                <div class="list-group-item-success card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="`+color+` card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-dark"><i class="fa fa-calendar mr-1"></i>`+data[index].tgl_produksi+`</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -82,9 +86,9 @@ function createTable(data,sno){
                             aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Produksi</div>
                             <a class="dropdown-item btnDetailProduksi" href="#detailProduksi" data-id="`+data[index].id_produksi+`" data-toggle="modal">Detail</a>
-                            <a class="dropdown-item btnEditProduksi" href="#editProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Produksi</a>
+                            <a class="dropdown-item btnEditProduksi" href="#editProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Data</a>
                             <a class="dropdown-item btnEditBahan" href="#editBahanProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Bahan</a>
-                            <a class="dropdown-item btnEditBarang" href="#editBarangProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Barang</a>
+                            `+edit_hasil+`
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item bthHapusProduksi" href="javascript:void(0)" data-id="`+data[index].id_produksi+`">Hapus</a>
                         </div>

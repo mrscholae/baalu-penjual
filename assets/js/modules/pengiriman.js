@@ -23,8 +23,8 @@
             html += `
                 <div class="form-group text-gray-900">
                     <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`" class="custom-control-input" id="`+data.id_barang+`">
-                        <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
+                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`" class="custom-control-input" id="addPengiriman`+data.id_barang+`">
+                        <label class="custom-control-label" for="addPengiriman`+data.id_barang+`">`+data.nama_barang+`</label>
                     </div>
                 </div>
             `
@@ -57,8 +57,8 @@
             html += `
                 <div class="form-group text-gray-900">
                     <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`" class="custom-control-input" id="`+data.id_barang+`">
-                        <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
+                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`" class="custom-control-input" id="addPengirimanUlang`+data.id_barang+`">
+                        <label class="custom-control-label" for="addPengirimanUlang`+data.id_barang+`">`+data.nama_barang+`</label>
                     </div>
                 </div>
             `
@@ -319,8 +319,8 @@
                 html += `
                     <div class="form-group text-gray-900">
                         <div class="custom-control custom-checkbox small">
-                            <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+data.harga+`|`+data.bagi_hasil+`" class="custom-control-input" id="`+data.id_barang+`">
-                            <label class="custom-control-label" for="`+data.id_barang+`">`+data.nama_barang+`</label>
+                            <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+data.harga+`|`+data.bagi_hasil+`" class="custom-control-input" id="edit`+data.id_barang+`">
+                            <label class="custom-control-label" for="edit`+data.id_barang+`">`+data.nama_barang+`</label>
                         </div>
                     </div>`
             });

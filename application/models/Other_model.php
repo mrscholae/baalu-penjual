@@ -12,6 +12,27 @@ class Other_model extends CI_Model {
         return $data;
     }
 
+    function sortArray(){
+        $funcArgument = func_get_args();
+        $content = array_shift($funcArgument);
+
+        foreach ($funcArgument as $n => $field) {
+
+            if (is_string($field)) {
+                $tmp = array();
+                foreach ($content as $key => $row) {
+                    $tmp[$key] = $row[$field];
+                }
+                $funcArgument[$n] = $tmp;
+            }
+
+        }
+
+        $funcArgument[] = & $content;
+        call_user_func_array('array_multisort', $funcArgument);
+        return array_pop($funcArgument);
+    }
+
 }
 
 /* End of file Other_model.php */

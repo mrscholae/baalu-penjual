@@ -120,3 +120,28 @@
         </div>
     </div>
 </div>
+
+<!-- modal edit toko  -->
+<div class="modal fade" id="rekapPenjualan" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="rekapPenjualanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="rekapPenjualanLabel">Rekap Penjualan</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="dataToko mb-3"></div>
+            <ul class="list-group text-gray-900">
+                <div class="dataPenjualan"></div>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <form action="" class="user">
+                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
