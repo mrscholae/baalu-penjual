@@ -81,7 +81,7 @@ class Toko extends CI_Controller {
     // ajax 
         public function ajax_list_toko(){
             $penjual = $this->_data_penjual();
-            $toko = $this->Main_model->get_all("toko", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $toko = $this->Main_model->get_all("toko", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_toko");
             foreach ($toko as $i => $toko) {
                 $data[$i] = $toko;
                 $data[$i]['link_toko'] = md5($toko['id_toko']);

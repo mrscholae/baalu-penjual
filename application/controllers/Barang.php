@@ -44,7 +44,7 @@ class Barang extends CI_Controller {
     // ajax 
         public function ajax_list_barang(){
             $penjual = $this->_data_penjual();
-            $barang = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $barang = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_barang");
             foreach ($barang as $i => $barang) {
                 $data[$i] = $barang;
                 $data[$i]['tgl_rilis'] = date("d-M-Y", strtotime($barang['tgl_rilis']));
