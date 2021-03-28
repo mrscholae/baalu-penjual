@@ -96,7 +96,15 @@ class Toko extends CI_Controller {
                 $pengiriman = COUNT($this->Main_model->get_all("pengiriman", ["id_toko" => $toko['id_toko'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]));
                 $data[$i]['pengiriman'] = $pengiriman;
                 $data[$i]['prioritas'] = $this->Main_model->get_one("prioritas_toko", ["id_toko" => $toko['id_toko'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+                if($data[$i]['prioritas']){
+                    $data[$i]['top'] = $data[$i]['prioritas']['pelayanan'] + $data[$i]['prioritas']['repeat_order'] + $data[$i]['prioritas']['retur'] + $data[$i]['prioritas']['pengunjung'] + $data[$i]['prioritas']['min_order'];
+                } else {
+                    $data[$i]['top'] = 0;
+                }
             }
+
+            $columns = array_column($data, 'top');
+            array_multisort($columns, SORT_DESC, $data);
 
             echo json_encode($data);
         }
