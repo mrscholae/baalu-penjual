@@ -300,9 +300,7 @@ class Toko extends CI_Controller {
             $penjual = $this->Other_model->_data_penjual();
 
             $id_toko = $this->input->post("id_toko");
-
-            $prioritas = $this->input->post("prioritas");
-
+            
             $jarak = 0;
             $pelayanan = 0;
             $repeat_order = 0;
@@ -310,13 +308,17 @@ class Toko extends CI_Controller {
             $pengunjung = 0;
             $min_order = 0;
 
-            foreach ($prioritas as $prioritas) {
-                if($prioritas == "jarak") $jarak = 1;
-                elseif($prioritas == "pelayanan") $pelayanan = 1;
-                elseif($prioritas == "retur") $retur = 1;
-                elseif($prioritas == "pengunjung") $pengunjung = 1;
-                elseif($prioritas == "min_order") $min_order = 1;
-                elseif($prioritas == "repeat_order") $repeat_order = 1;
+            if($this->input->post("prioritas")){
+                $prioritas = $this->input->post("prioritas");
+    
+                foreach ($prioritas as $prioritas) {
+                    if($prioritas == "jarak") $jarak = 1;
+                    elseif($prioritas == "pelayanan") $pelayanan = 1;
+                    elseif($prioritas == "retur") $retur = 1;
+                    elseif($prioritas == "pengunjung") $pengunjung = 1;
+                    elseif($prioritas == "min_order") $min_order = 1;
+                    elseif($prioritas == "repeat_order") $repeat_order = 1;
+                }
             }
 
             $this->Main_model->edit_data("prioritas_toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0], ["hapus" => 1]);

@@ -368,7 +368,7 @@
                     prioritas.push($(this).val());
                 })
 
-                if(prioritas.length != 0){
+                // if(prioritas.length != 0){
                     data = {id_toko: id_toko, prioritas: prioritas}
                     let result = ajax(url_base+"toko/add_prioritas", "POST", data);
     
@@ -393,13 +393,13 @@
                             text: 'terjadi kesalahan, ulangi proses input'
                         })
                     }
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'pilih salah satu prioritas'
-                    })
-                }
+                // } else {
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: 'pilih salah satu prioritas'
+                //     })
+                // }
             }
         })
 
