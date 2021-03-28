@@ -169,13 +169,18 @@
             </ul>
 
             <ul class="list-group mb-3">
+                <div class="detailSisaProduksi"></div>
+            </ul>
+
+            <ul class="list-group mb-3">
+                <div class="detailProduksiListBarang"></div>
+            </ul>
+
+            <ul class="list-group mb-3">
                 <li class="list-group-item list-group-item-success">List Bahan Produksi</li>
                 <div class="detailProduksiListBahan"></div>
             </ul>
             
-            <ul class="list-group">
-                <div class="detailProduksiListBarang"></div>
-            </ul>
         </div>
         <div class="modal-footer">
             <form class="user">
@@ -398,6 +403,82 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal add sisa -->
+<div class="modal fade" id="addSisaProduksi" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="addSisaProduksiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addSisaProduksiLabel">Form Input Sisa Produksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="" class="user">
+                <input type="hidden" name="id_produksi">
+                <div class="form-group">
+                    <label for="tgl_produksi" class="col-form-label">Waktu Produksi</label>
+                    <input type="text" name="tgl_produksi" class="form-control form-control-md" id="tgl_produksi" readonly>
+                </div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-store mr-1"></i>List Barang</h6>
+                    </div>
+                    <div class="card-body text-gray-900">
+                        <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> inputkan sisa barang</div>
+                        <div class="listItem"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <form class="user">
+                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary btn-user btnSimpan">Simpan</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal edit sisa -->
+<div class="modal fade" id="editSisaProduksi" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="editSisaProduksiLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editSisaProduksiLabel">Form Edit Sisa Produksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="" class="user">
+                <input type="hidden" name="id_produksi">
+                <div class="form-group">
+                    <label for="tgl_produksi" class="col-form-label">Waktu Produksi</label>
+                    <input type="text" name="tgl_produksi" class="form-control form-control-md" id="tgl_produksi" readonly>
+                </div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-store mr-1"></i>List Barang</h6>
+                    </div>
+                    <div class="card-body text-gray-900">
+                        <div class="alert alert-info"><i class="fa fa-info-circle text-info"></i> inputkan sisa barang</div>
+                        <div class="listItem"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <form class="user">
+                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary btn-user btnSimpan">Simpan</button>
+            </form>
+        </div>
         </div>
     </div>
 </div>

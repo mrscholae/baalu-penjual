@@ -49,6 +49,8 @@
                         <span class="input-group-text">`+i+`. `+nama_bahan+`</span>
                     </div>
                     <input type="hidden" name="id_bahan_pembelian" value="`+id_bahan+`">
+                </div>
+                <div class="input-group input-group-sm">
                     <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+satuan+`</span>
@@ -192,7 +194,7 @@
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span><i class="fa fa-shopping-bag mr-1"></i>`+data.qty+` `+data.satuan+`</span>
-                        <span><i class="fa fa-box mr-1"></i>`+formatRupiah(data.harga_satuan, "Rp. ")+`</span>
+                        <span><i class="fa fa-box mr-1"></i>`+data.harga_satuan+`</span>
                     </li>`
                     
                 i++;
@@ -290,11 +292,14 @@
                 nama_bahan = data[1];
                 satuan = data[2];
                 
-                html += `<div class="input-group input-group-sm">
+                html += `
+                <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+i+`. `+nama_bahan+`</span>
                     </div>
                     <input type="hidden" name="id_bahan_pembelian_tambah" value="`+id_bahan+`">
+                </div>
+                <div class="input-group input-group-sm">
                     <input type="number" name="qty_tambah" class="form-control" aria-label="Amount (to the nearest dollar)" value="">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+satuan+`</span>
@@ -429,6 +434,7 @@
                         timer: 1500
                     })
 
+                    loadPagination(page)
                     data_edit_pembelian(id_pembelian);
 
                 } else {
@@ -584,7 +590,7 @@
 
                         
                         $("#editPembelianTambahList").show()
-                        $("#editPembelianTambahBarang").hide()
+                        $("#editPembelianTambahBahan").hide()
 
                         $(".footer-3").html(`
                             <div class="modal-footer">
@@ -645,13 +651,15 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+i+`. `+data.nama_bahan+`</span>
                     </div>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDeleteDetailPembelian" data-id="`+data.id+`|`+data.id_pembelian+`|`+data.nama_bahan+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
+                    </div>
                     <input type="hidden" name="id_detail_edit" value="`+data.id+`">
+                </div>
+                <div class="input-group input-group-sm">
                     <input type="number" name="qty_edit" class="form-control" aria-label="Amount (to the nearest dollar)" value="`+data.qty+`">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+data.satuan+`</span>
-                    </div>
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDeleteDetailPembelian" data-id="`+data.id+`|`+data.id_pembelian+`|`+data.nama_bahan+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
                     </div>
                 </div>
                 

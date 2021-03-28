@@ -9,6 +9,7 @@ class Pengambilan extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model("Main_model");
+        $this->load->model("Other_model");
     
         // Load Pagination library
         $this->load->library('pagination');
@@ -86,16 +87,25 @@ class Pengambilan extends CI_Controller {
      
         // All records count
         // $allcount = $this->Pengambilan_model->getrecordCount();
-        $allcount = COUNT($this->Main_model->get_all("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Proses"], "tgl_pengambilan"));
+        $allcount = COUNT($this->Main_model->get_all("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "arsip" => 0], "tgl_pengambilan"));
     
         // Get records
-        $record = $this->Main_model->get_all_limit("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Proses"], "tgl_pengambilan", "ASC", $rowno, $rowperpage);
+        $record = $this->Main_model->get_all_limit("pengiriman", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0, "arsip" => 0], "tgl_pengambilan", "ASC", $rowno, $rowperpage);
         $users_record = [];
 
         foreach ($record as $i => $record) {
             $users_record[$i] = $record;
             $users_record[$i]['tgl_pengiriman'] = date("d-M-y H:i", strtotime($record['tgl_pengiriman']));
             $users_record[$i]['tgl_pengambilan'] = date("d-M-y H:i", strtotime($record['tgl_pengambilan']));
+
+            $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $record['id_pengiriman'], "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+                
+            $total = 0;
+            foreach ($detail_pengiriman as $detail) {
+                $total += ($detail['kirim'] - $detail['kembali']) * ($detail['harga'] - $detail['bagi_hasil']);
+            }
+
+            $users_record[$i]['total'] = $this->Main_model->rupiah($total);
         }
         // $users_record = $this->Pengambilan_model->getData($rowno,$rowperpage);
      
@@ -137,6 +147,19 @@ class Pengambilan extends CI_Controller {
     
         echo json_encode($data);
      
+    }
+
+    public function add_arsip(){
+        $penjual = $this->Other_model->_data_penjual();
+
+        $id_pengiriman = $this->input->post("id_pengiriman");
+        $data = $this->Main_model->edit_data("pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual'], "hapus" => 0], ["arsip" => 1]);
+
+        if($data){
+            echo json_encode("1");
+        } else {
+            echo json_encode("0");
+        }
     }
 }
 

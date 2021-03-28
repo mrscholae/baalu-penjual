@@ -110,6 +110,8 @@ $("#btnAddProduksi").click(function(){
                         <span class="input-group-text">`+i+`. `+nama_bahan+`</span>
                     </div>
                     <input type="hidden" name="id_bahan_produksi" value="`+id_bahan+`">
+                </div>
+                <div class="input-group input-group-sm">
                     <input type="number" name="qty_bahan_produksi" class="form-control" aria-label="Amount (to the nearest dollar)">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+satuan+`</span>
@@ -637,20 +639,30 @@ $("#btnAddProduksi").click(function(){
         $(".detailProduksiListBahan").html(html);
 
         html = "";
+        html2 = "";
         
         if(result.produksi.tipe_produksi == "Produksi Barang") {
             if(result.produksi_barang.length != 0){
                 i = 1;
                 html = `<li class="list-group-item list-group-item-success">List Produksi Barang</li>`;
+                html2 = `<li class="list-group-item list-group-item-success">List Sisa Barang</li>`;
+
                 result.produksi_barang.forEach(data => {
                     html += `
                         <li class="list-group-item list-group-item-primary d-flex justify-content-between">
                             <span>`+i+`. `+data.nama_barang+`</span>
-                            <span><i class="fa fa-boxes mr-1"></i>`+data.total+`</span>
+                            <span><i class="fa fa-boxes mr-1"></i>`+data.berhasil+`</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-center">
                             <span class="mr-3"><i class="fa fa-check text-success mr-"></i>`+data.berhasil+`</span>
                             <span><i class="fa fa-times text-danger mr-1"></i>`+data.gagal+`</span>
+                        </li>`
+
+                        
+                    html2 += `
+                        <li class="list-group-item list-group-item-primary d-flex justify-content-between">
+                            <span>`+i+`. `+data.nama_barang+`</span>
+                            <span><i class="fa fa-cookie-bite mr-1"></i>`+data.sisa+`</span>
                         </li>`
     
                     i++;
@@ -658,6 +670,7 @@ $("#btnAddProduksi").click(function(){
                 });
             } else {
                 html += ``
+                html2 += ``
             }
         } else {
             if(result.produksi_bahan.length != 0){
@@ -678,6 +691,7 @@ $("#btnAddProduksi").click(function(){
         }
 
         $(".detailProduksiListBarang").html(html);
+        $(".detailSisaProduksi").html(html2);
     })
 // detail produksi 
 
@@ -829,13 +843,15 @@ $(document).on("click", ".bthHapusProduksi", function(){
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+i+`. `+data.nama_bahan+`</span>
                     </div>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDelete" data-id="`+data.id+`|`+data.id_produksi+`|`+data.nama_bahan+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
+                    </div>
                     <input type="hidden" name="id" value="`+data.id+`">
+                </div>
+                <div class="input-group input-group-sm">
                     <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="`+data.qty+`">
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+data.satuan+`</span>
-                    </div>
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDelete" data-id="`+data.id+`|`+data.id_produksi+`|`+data.nama_bahan+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
                     </div>
                 </div>
                 
@@ -1914,3 +1930,206 @@ $(document).on("click", ".bthHapusProduksi", function(){
         })
     })
 // edit produksi bahan 
+
+// sisa produksi 
+    $(document).on("click", ".addSisaProduksi", function(){
+        let id_produksi = $(this).data("id");
+        let data = {id_produksi:id_produksi};
+        let form = "#addSisaProduksi";
+
+        let result = ajax(url_base+"produksi/get_sisa_produksi", "POST", data);
+
+        $(form+" input[name='tgl_produksi']").val(result.tgl_produksi);
+        $(form+" input[name='id_produksi']").val(result.id_produksi);
+
+        html = '';
+
+        if(result.detail.length != 0){
+            let i = 1;
+
+            result.detail.forEach(data => {
+                html += `
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">`+i+`. `+data.nama_barang+` (`+data.berhasil+`)</span>
+                    </div>
+                    <input type="hidden" name="id" value="`+data.id+`">
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <input type="number" name="sisa" class="form-control" value="" aria-label="Amount (to the nearest dollar)">
+                </div>`
+
+                i++;
+            });
+        } else {
+            html = `<div class="alert alert-danger"><i class="fa fa-exclamation-circle mr-1"></i>list kosong</div>`
+        }
+
+        $(form+" .listItem").html(html);
+    })
+
+    $(document).on("click", "#addSisaProduksi .btnSimpan", function(){
+        let form = "#addSisaProduksi"
+        let id_produksi = $(form+" input[name='id_produksi']").val();
+
+        Swal.fire({
+            icon: 'question',
+            text: 'Yakin akan menginputkan sisa produksi?',
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then(function (result) {
+            if (result.value) {
+                id = new Array();
+                $.each($(form+" input[name='id']"), function(){
+                    id.push($(this).val());
+                });
+                
+                // untuk cek jik ada field yang tak diisi atau bernilai tidak sesuai
+                let eror = 0;
+
+                sisa = new Array();
+                $.each($(form+" input[name='sisa']"), function(){
+                    sisa.push($(this).val());
+
+                    if($(this).val() == ""){
+                        eror = 1;
+                    }
+
+                });
+                
+                if(eror == 0){
+                    data = {id: id, sisa:sisa, id_produksi:id_produksi}
+                    let result = ajax(url_base+"produksi/add_sisa_produksi", "POST", data);
+
+                    if(result == 1){
+                        loadPagination(page)
+                        $(form).modal("hide");
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            text: 'Berhasil menginputkan sisa produksi',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'terjadi kesalahan, ulangi proses input'
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'inputkan jumlah barang, jumlah barang tidak boleh kosong'
+                    })
+                }
+                
+            }
+        })
+    })
+
+    $(document).on("click", ".btnEditSisa", function(){
+        let id_produksi = $(this).data("id");
+        let data = {id_produksi:id_produksi};
+        let form = "#editSisaProduksi";
+
+        let result = ajax(url_base+"produksi/get_sisa_produksi", "POST", data);
+
+        $(form+" input[name='tgl_produksi']").val(result.tgl_produksi);
+        $(form+" input[name='id_produksi']").val(id_produksi);
+
+        html = '';
+
+        if(result.detail.length != 0){
+            let i = 1;
+
+            result.detail.forEach(data => {
+                html += `
+                <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">`+i+`. `+data.nama_barang+` (`+data.berhasil+`)</span>
+                    </div>
+                    <input type="hidden" name="id" value="`+data.id+`">
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <input type="number" name="sisa" class="form-control" value="`+data.sisa+`" aria-label="Amount (to the nearest dollar)">
+                </div>`
+
+                i++;
+            });
+        } else {
+            html = `<div class="alert alert-danger"><i class="fa fa-exclamation-circle mr-1"></i>list kosong</div>`
+        }
+
+        $(form+" .listItem").html(html);
+    })
+
+    $(document).on("click", "#editSisaProduksi .btnSimpan", function(){
+        let form = "#editSisaProduksi"
+        let id_produksi = $(form+" input[name='id_produksi']").val();
+
+        Swal.fire({
+            icon: 'question',
+            text: 'Yakin akan mengubah data sisa produksi?',
+            showCloseButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then(function (result) {
+            if (result.value) {
+                id = new Array();
+                $.each($(form+" input[name='id']"), function(){
+                    id.push($(this).val());
+                });
+                
+                // untuk cek jik ada field yang tak diisi atau bernilai tidak sesuai
+                let eror = 0;
+
+                sisa = new Array();
+                $.each($(form+" input[name='sisa']"), function(){
+                    sisa.push($(this).val());
+
+                    if($(this).val() == ""){
+                        eror = 1;
+                    }
+
+                });
+                
+                if(eror == 0){
+                    data = {id: id, sisa:sisa, id_produksi:id_produksi}
+                    let result = ajax(url_base+"produksi/add_sisa_produksi", "POST", data);
+
+                    if(result == 1){
+                        loadPagination(page)
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            text: 'Berhasil mengubah data sisa produksi',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'terjadi kesalahan, ulangi proses input'
+                        })
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'inputkan jumlah barang, jumlah barang tidak boleh kosong'
+                    })
+                }
+                
+            }
+        })
+    })
+// sisa produksi 

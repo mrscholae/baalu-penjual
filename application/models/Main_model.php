@@ -111,6 +111,13 @@ class Main_model extends CI_MODEL{
         return $this->db->get()->result_array();
     }
 
+    public function get_all_like($table, $col, $like, $where, $orderby = "", $urut = "ASC"){
+        $this->db->from($table);
+        $this->db->like($col, $like);
+        if($where) $this->db->where($where);
+        if($orderby) $this->db->order_by($orderby, $urut);
+        return $this->db->get()->result_array();
+    }
 
     // other function 
     public function rupiah($angka){

@@ -31,7 +31,7 @@ class Home extends CI_Controller {
         // for sidebar 
         $data['sidebar'] = "home";
 
-        $data['pengambilan'] = COUNT($this->Main_model->get_all("pengiriman", ["status" => "Proses", "hapus" => "0", "id_penjual" => $penjual['id_penjual']]));
+        $data['pengambilan'] = COUNT($this->Main_model->get_all("pengiriman", ["hapus" => "0", "arsip" => "0", "id_penjual" => $penjual['id_penjual']]));
         
         // alert stok bahan kurang 
         $data['stok_bahan'] = $this->Home_model->alert_stok_bahan();

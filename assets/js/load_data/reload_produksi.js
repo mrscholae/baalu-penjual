@@ -57,10 +57,17 @@ function createTable(data,sno){
             color = "list-group-item-success";
             edit_hasil = `<a class="dropdown-item btnEditBarang" href="#editBarangProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Hasil</a>`;
             if(data[index].produksi_barang == 0){
-                barang = `<a href="#addProduksiBarang" data-toggle="modal" class="btn btn-circle btn-info addProduksiBarang" data-id="`+data[index].id_produksi+`"><i class="fa fa-box"></i></a>`;
+                barang = `<a href="#addProduksiBarang" data-toggle="modal" class="btn btn-circle btn-info mr-1 addProduksiBarang" data-id="`+data[index].id_produksi+`"><i class="fa fa-box"></i></a>`;
             } else {
                 barang = '';
             }
+
+            if(data[index].input_sisa == 0){
+                sisa = `<a href="#addSisaProduksi" data-toggle="modal" class="btn btn-circle btn-warning addSisaProduksi" data-id="`+data[index].id_produksi+`"><i class="fa fa-cookie-bite"></i></a>`;
+            } else {
+                sisa = '';
+            }
+
         } else if(data[index].tipe_produksi == "Produksi Bahan") {
             color = "list-group-item-warning";
             edit_hasil = `<a class="dropdown-item btnEditProduksiBahan" href="#editProduksiBahan" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Hasil</a>`;
@@ -69,7 +76,8 @@ function createTable(data,sno){
             } else {
                 barang = '';
             }
-
+            
+            sisa = '';
         }
 
         html += `
@@ -89,6 +97,7 @@ function createTable(data,sno){
                             <a class="dropdown-item btnEditProduksi" href="#editProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Data</a>
                             <a class="dropdown-item btnEditBahan" href="#editBahanProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Bahan</a>
                             `+edit_hasil+`
+                            <a class="dropdown-item btnEditSisa" href="#editSisaProduksi" data-toggle="modal" data-id="`+data[index].id_produksi+`">Edit Sisa</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item bthHapusProduksi" href="javascript:void(0)" data-id="`+data[index].id_produksi+`">Hapus</a>
                         </div>
@@ -100,6 +109,7 @@ function createTable(data,sno){
                     <div class="d-flex justify-content-center mt-1">
                         `+bahan+`
                         `+barang+`
+                        `+sisa+`
                     </div>
                 </div>
             </div>

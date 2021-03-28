@@ -19,6 +19,13 @@
                     <span>Dashboard</span></a>
             </li>
             
+            <li class="nav-item" id="pelanggan">
+                <a class="nav-link" href="<?= base_url()?>pelanggan">
+                    <i class="fas fa-users"></i>
+                    <span>Pelanggan</span>
+                </a>
+            </li>
+
             <li class="nav-item" id="toko">
                 <a class="nav-link" href="<?= base_url()?>toko">
                     <i class="fas fa-store"></i>

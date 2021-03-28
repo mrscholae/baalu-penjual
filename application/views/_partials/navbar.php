@@ -31,7 +31,7 @@
 <!-- Topbar Navbar -->
 <ul class="navbar-nav ml-auto">
 
-    <?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "Menunggu Pengambilan") :?>
+    <?php if($navbar == "Toko" || $navbar == "Barang" || $navbar == "Menunggu Pengambilan" || $navbar == "Pelanggan") :?>
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
@@ -62,6 +62,12 @@
         <?php if($navbar == "Toko"):?>
             <li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addToko" id="btnPlusToko" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-plus"></i>
+                </a>
+            </li>
+        <?php elseif($navbar == "Pelanggan"):?>
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" data-toggle="modal" href="#addPelanggan" id="btnPlusPelanggan" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-plus"></i>
                 </a>
             </li>

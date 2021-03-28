@@ -75,10 +75,7 @@ class Produksi extends CI_Controller {
             $users_record[$i] = $record;
             $users_record[$i]['tgl_produksi'] = date("d-M-Y H:i", strtotime($record['tgl_produksi']));
             $detail = $this->Main_model->get_all("bahan_produksi", ["id_produksi" => $record['id_produksi'], "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
-            
-            // if(!$detail){
-            //     $data['']
-            // }
+
             $harga_total = 0;
             foreach ($detail as $detail) {
                 $harga_total += ($detail['harga_satuan'] * $detail['qty']);
@@ -249,6 +246,34 @@ class Produksi extends CI_Controller {
                     $success = 1;
                 }
             }
+
+            if($success == 1){
+                echo json_encode("1");
+            } else {
+                echo json_encode("0");
+            }
+        }
+        
+        public function add_sisa_produksi(){
+            $penjual = $this->_data_penjual();
+
+            $id_produksi = $this->input->post("id_produksi");
+            $id = $this->input->post("id");
+            $sisa = $this->input->post("sisa");
+
+            $success = 0;
+
+            foreach ($id as $i => $id) {
+                $data = [
+                    "sisa" => $sisa[$i],
+                ];
+
+                $this->Main_model->edit_data("detail_produksi_barang", ["id" => $id, "id_penjual" => $penjual['id_penjual']], $data);
+
+                $success = 1;
+            }
+
+            $this->Main_model->edit_data("produksi", ["id_produksi" => $id_produksi, "id_penjual" => $penjual['id_penjual']], ["input_sisa" => 1]);
 
             if($success == 1){
                 echo json_encode("1");
@@ -457,6 +482,17 @@ class Produksi extends CI_Controller {
                     $i++;
                 }
             }
+
+            echo json_encode($data);
+        }
+
+        // get sisa produksi 
+        public function get_sisa_produksi(){
+            $penjual = $this->_data_penjual();
+            $id_produksi = $this->input->post("id_produksi");
+
+            $data = $this->Main_model->get_one("produksi", ["id_produksi" => $id_produksi, "id_penjual" => $penjual['id_penjual']]);
+            $data['detail'] = $this->Main_model->get_all("detail_produksi_barang", ["id_produksi" => $id_produksi, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
 
             echo json_encode($data);
         }

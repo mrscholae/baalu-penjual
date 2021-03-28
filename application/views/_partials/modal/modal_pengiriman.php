@@ -28,17 +28,17 @@
             <form class="user" id="formAddPengiriman">
                 <input type="hidden" name="id_toko" id="id_toko_pengiriman">
                 <div class="form-group">
+                    <p><b>List Pengiriman Barang</b></p>
+                    <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>masukkan jumlah barang yang akan dikirim</div>
+                    <div class="listBarangPengiriman"></div>
+                </div>
+                <div class="form-group">
                     <label for="tgl_pengiriman" class="col-form-label">Tgl. Pengiriman</label>
                     <input type="datetime-local" name="tgl_pengiriman" class="form-control form-control-md" id="tgl_pengiriman_add" required>
                 </div>
                 <div class="form-group">
                     <label for="tgl_pengambilan" class="col-form-label">Tgl. Pengambilan</label>
                     <input type="datetime-local" name="tgl_pengambilan" class="form-control form-control-md" id="tgl_pengambilan_add" required>
-                </div>
-                <div class="form-group">
-                    <p><b>List Pengiriman Barang</b></p>
-                    <div class="alert alert-info"><i class="fa fa-info-circle text-info mr-1"></i>masukkan jumlah barang yang akan dikirim</div>
-                    <div class="listBarangPengiriman"></div>
                 </div>
             </form>
         </div>

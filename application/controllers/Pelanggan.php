@@ -3,7 +3,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Toko extends CI_Controller {
+class Pelanggan extends CI_Controller {
 
     
     public function __construct()
@@ -18,113 +18,109 @@ class Toko extends CI_Controller {
 		}
     }
     
-    public function index()
-    {
+    public function index(){
         // for if statement navbar fitur
-        $data['navbar'] = "Toko";
+        $data['navbar'] = "Pelanggan";
 
         // for title and header 
-        $data['title'] = "List Toko";
+        $data['title'] = "List Pelanggan";
         
         // for sidebar 
-        $data['sidebar'] = "toko";
+        $data['sidebar'] = "pelanggan";
 
         // for modal 
-        $data['modal'] = ["modal_toko", "modal_pengiriman"];
+        $data['modal'] = ["modal_pelanggan", "modal_pembelian_pelanggan"];
 
         // javascript 
         $data['js'] = [
             "modules/other.js", 
-            "modules/toko.js", 
-            "modules/pengiriman.js",
-            "load_data/reload_toko.js",
+            "modules/pelanggan.js", 
+            "modules/pembelian_pelanggan.js",
+            "load_data/reload_pelanggan.js",
         ];
         
-        $this->load->view("pages/toko/list-toko", $data);
+        $this->load->view("pages/pelanggan/list-pelanggan", $data);
     }
 
-    public function detail($id)
-    {
+    public function detail($id){
         $penjual = $this->_data_penjual();
-        $toko = $this->Main_model->get_one("toko", ["md5(id_toko)" => $id, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+        $pelanggan = $this->Main_model->get_one("pelanggan", ["md5(id_pelanggan)" => $id, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
         
-        if($toko) {
+        if($pelanggan) {
             // for if statement navbar fitur
-            $data['navbar'] = "Detail Toko";
+            $data['navbar'] = "Detail Pelanggan";
     
             // for title and header 
-            $data['title'] = $toko['nama_toko'];
+            $data['title'] = $pelanggan['nama_pelanggan'];
             
             // for sidebar 
-            $data['sidebar'] = "toko";
+            $data['sidebar'] = "pelanggan";
 
-            // id toko untuk memanggil ajax 
-            $data['id_toko'] = md5($toko['id_toko']);
+            // id pelanggan untuk memanggil ajax 
+            $data['id_pelanggan'] = md5($pelanggan['id_pelanggan']);
 
             // for modal 
-            $data['modal'] = ["modal_toko", "modal_pengiriman"];
+            $data['modal'] = ["modal_pelanggan", "modal_pembelian_pelanggan"];
 
             // javascript 
             $data['js'] = [
                 "modules/other.js", 
-                "modules/toko.js", 
-                "modules/pengiriman.js",
-                "load_data/reload_detail_toko.js",
+                "modules/pelanggan.js", 
+                "modules/pembelian_pelanggan.js",
+                "load_data/reload_detail_pelanggan.js",
             ];
     
-            $this->load->view("pages/toko/detail-toko", $data);
+            $this->load->view("pages/pelanggan/detail-pelanggan", $data);
         } else {
-            redirect(base_url("toko"));
+            redirect(base_url("pelanggan"));
         }
     }
     
     // ajax 
-        public function ajax_list_toko(){
+        public function ajax_list_pelanggan(){
             $penjual = $this->_data_penjual();
 
             if($this->input->post("nama")) {
                 $nama = $this->input->post("nama");
-                $toko = $this->Main_model->get_all_like("toko", "nama_toko", "$nama", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_toko");
+                $pelanggan = $this->Main_model->get_all_like("pelanggan", "nama_pelanggan", "$nama", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_pelanggan");
             } else {
-                $toko = $this->Main_model->get_all("toko", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_toko");
+                $pelanggan = $this->Main_model->get_all("pelanggan", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_pelanggan");
                 // get_all_like($table, $col, $like, $where, $orderby = "", $urut = "ASC"){
             }
 
-            foreach ($toko as $i => $toko) {
-                $data[$i] = $toko;
-                $data[$i]['link_toko'] = md5($toko['id_toko']);
-                $pengiriman = COUNT($this->Main_model->get_all("pengiriman", ["id_toko" => $toko['id_toko'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]));
-                $data[$i]['pengiriman'] = $pengiriman;
-                $data[$i]['prioritas'] = $this->Main_model->get_one("prioritas_toko", ["id_toko" => $toko['id_toko'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+            foreach ($pelanggan as $i => $pelanggan) {
+                $data[$i] = $pelanggan;
+                $data[$i]['link_pelanggan'] = md5($pelanggan['id_pelanggan']);
+                $pembelian = COUNT($this->Main_model->get_all("pembelian_pelanggan", ["id_pelanggan" => $pelanggan['id_pelanggan'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]));
+                $data[$i]['pembelian'] = $pembelian;
             }
 
             echo json_encode($data);
         }
         
-        public function ajax_toko($id_toko){
+        public function ajax_pelanggan($id_pelanggan){
             $penjual = $this->_data_penjual();
             
-            $toko = $this->Main_model->get_one("toko", ["md5(id_toko)" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
-            $pengiriman = $this->Main_model->get_all("pengiriman", ["id_toko" => $toko['id_toko'], "hapus" => 0], "id_pengiriman", "DESC");
+            $pelanggan = $this->Main_model->get_one("pelanggan", ["md5(id_pelanggan)" => $id_pelanggan, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $pembelian = $this->Main_model->get_all("pembelian_pelanggan", ["id_pelanggan" => $pelanggan['id_pelanggan'], "hapus" => 0], "id_pembelian", "DESC");
             
-            $data['toko'] = $toko;
-            $data['toko']['tgl_bergabung'] = date("d-M-y", strtotime($toko['tgl_bergabung']));
-            $data['toko']['pengiriman'] = COUNT($pengiriman);
+            $data['pelanggan'] = $pelanggan;
+            $data['pelanggan']['tgl_bergabung'] = date("d-M-y", strtotime($pelanggan['tgl_bergabung']));
+            $data['pelanggan']['pembelian'] = COUNT($pembelian);
 
-            $data['pengiriman'] = [];
-            foreach ($pengiriman as $i => $pengiriman) {
-                $data['pengiriman'][$i] = $pengiriman;
-                $data['pengiriman'][$i]['tgl_pengiriman'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengiriman']));
-                $data['pengiriman'][$i]['tgl_pengambilan'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengambilan']));
+            $data['pembelian'] = [];
+            foreach ($pembelian as $i => $pembelian) {
+                $data['pembelian'][$i] = $pembelian;
+                $data['pembelian'][$i]['tgl_pembelian'] = date("d-M-y H:i", strtotime($pembelian['tgl_pembelian']));
 
-                $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $pengiriman['id_pengiriman'], "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+                $detail_pembelian = $this->Main_model->get_all("detail_pembelian_pelanggan", ["id_pembelian" => $pembelian['id_pembelian'], "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
                 
                 $total = 0;
-                foreach ($detail_pengiriman as $detail) {
-                    $total += ($detail['kirim'] - $detail['kembali']) * ($detail['harga'] - $detail['bagi_hasil']);
+                foreach ($detail_pembelian as $detail) {
+                    $total += ($detail['qty']) * ($detail['harga']);
                 }
 
-                $data['pengiriman'][$i]['total'] = $this->Main_model->rupiah($total);
+                $data['pembelian'][$i]['total'] = $this->Main_model->rupiah($total);
             }
 
 
@@ -133,23 +129,22 @@ class Toko extends CI_Controller {
     // ajax 
 
     // add 
-        public function add_toko(){
+        // pakai 
+        public function add_pelanggan(){
             $penjual = $this->_data_penjual();
 
             $kecamatan = $this->input->post('kecamatan');
 
             $data = [
                 "tgl_bergabung" => $this->input->post("tgl_bergabung"),
-                "nama_toko" => $this->input->post("nama_toko"),
+                "nama_pelanggan" => $this->input->post("nama_pelanggan"),
                 "alamat" => $this->input->post("alamat"),
-                "pj" => $this->input->post("pj"),
                 "no_hp" => $this->input->post("no_hp"),
-                "jam_operasional" => $this->input->post("jam_operasional"),
-                "id_penjual" => $penjual['id_penjual'],
                 "kecamatan" => $kecamatan,
+                "id_penjual" => $penjual['id_penjual'],
             ];
 
-            $data = $this->Main_model->add_data("toko", $data);
+            $data = $this->Main_model->add_data("pelanggan", $data);
             if($data){
 
                 // cek kecamatan jika tidak ada inputkan
@@ -164,67 +159,44 @@ class Toko extends CI_Controller {
             }
         }
 
-        public function add_barang_toko(){
+        // pakai 
+        public function add_pembelian(){
             $penjual = $this->_data_penjual();
+            $id_pelanggan = $this->input->post("id_pelanggan");
 
-            $data = [
-                "id_barang" => $this->input->post("id_barang"),
-                "id_toko" => $this->input->post("id_toko"),
-                "id_penjual" => $penjual['id_penjual']
-            ];
+            $pelanggan = $this->Main_model->get_one("pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual']]);
 
-            $data = $this->Main_model->add_data("barang_toko", $data);
-            if($data){
-                echo json_encode("1");
-            } else {
-                echo json_encode("0");
-            }
-        }
-
-        public function add_pengiriman(){
-            $penjual = $this->_data_penjual();
-            $id_toko = $this->input->post("id_toko");
-
-            $toko = $this->Main_model->get_one("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']]);
-
-            if($toko){
+            if($pelanggan){
                 
                 $data = [
-                    "id_toko" => $id_toko,
-                    "nama_toko" => $toko['nama_toko'],
-                    "pj" => $toko['pj'],
-                    "no_hp" => $toko['no_hp'],
-                    "alamat" => $toko['alamat'],
-                    "kecamatan" => $toko['kecamatan'],
-                    "jam_operasional" => $toko['jam_operasional'],
-                    "tgl_pengiriman" => $this->input->post("tgl_pengiriman"),
-                    "tgl_pengambilan" => $this->input->post("tgl_pengambilan"),
-                    "status" => "Proses",
+                    "id_pelanggan" => $id_pelanggan,
+                    "nama_pelanggan" => $pelanggan['nama_pelanggan'],
+                    "no_hp" => $pelanggan['no_hp'],
+                    "alamat" => $pelanggan['alamat'],
+                    "kecamatan" => $pelanggan['kecamatan'],
+                    "tgl_pembelian" => $this->input->post("tgl_pembelian"),
                     "id_penjual" => $penjual['id_penjual'],
                 ];
 
-                $id_pengiriman = $this->Main_model->add_data("pengiriman", $data);
+                $id_pembelian = $this->Main_model->add_data("pembelian_pelanggan", $data);
                 
                 $id_barang = $this->input->post("id_barang");
                 $qty = $this->input->post("qty");
                 $harga = $this->input->post("harga");
-                $bh = $this->input->post("bh");
 
                 foreach ($id_barang as $i => $id_barang) {
                     $barang = $this->Main_model->get_one('barang', ["id_barang" => $id_barang, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
                     if($qty[$i] != 0) {
                         $data = [
-                            "id_pengiriman" => $id_pengiriman,
+                            "id_pembelian" => $id_pembelian,
                             "id_barang" => $id_barang,
                             "nama_barang" => $barang['nama_barang'],
-                            "kirim" => $qty[$i],
-                            "kembali" => "0",
+                            "qty" => $qty[$i],
                             "harga" => $this->Main_model->nominal($harga[$i]),
-                            "bagi_hasil" => $this->Main_model->nominal($bh[$i]),
                             "id_penjual" => $penjual['id_penjual']
                         ];
     
-                        $this->Main_model->add_data("detail_pengiriman", $data);
+                        $this->Main_model->add_data("detail_pembelian_pelanggan", $data);
                     }
                 }
 
@@ -295,98 +267,56 @@ class Toko extends CI_Controller {
                 echo json_encode("0");
             }
         }
-
-        public function add_prioritas(){
-            $penjual = $this->Other_model->_data_penjual();
-
-            $id_toko = $this->input->post("id_toko");
-
-            $prioritas = $this->input->post("prioritas");
-
-            $jarak = 0;
-            $pelayanan = 0;
-            $repeat_order = 0;
-            $retur = 0;
-            $pengunjung = 0;
-            $min_order = 0;
-
-            foreach ($prioritas as $prioritas) {
-                if($prioritas == "jarak") $jarak = 1;
-                elseif($prioritas == "pelayanan") $pelayanan = 1;
-                elseif($prioritas == "retur") $retur = 1;
-                elseif($prioritas == "pengunjung") $pengunjung = 1;
-                elseif($prioritas == "min_order") $min_order = 1;
-                elseif($prioritas == "repeat_order") $repeat_order = 1;
-            }
-
-            $this->Main_model->edit_data("prioritas_toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0], ["hapus" => 1]);
-
-            $data = [
-                "id_toko" => $id_toko,
-                "jarak" => $jarak,
-                "pelayanan" => $pelayanan,
-                "repeat_order" => $repeat_order,
-                "retur" => $retur,
-                "pengunjung" => $pengunjung,
-                "min_order" => $min_order,
-                "id_penjual" => $penjual['id_penjual'],
-            ];
-
-            $cek = $this->Main_model->add_data("prioritas_toko", $data);
-
-            if($cek){
-                echo json_encode("1");
-            } else {
-                echo json_encode("0");
-            }
-        }
     // add 
     
     // get 
-        public function get_toko(){
-            $id_toko = $this->input->post("id_toko");
+        // pakai 
+        public function get_pelanggan(){
+            $id_pelanggan = $this->input->post("id_pelanggan");
             $penjual = $this->_data_penjual();
 
-            $data = $this->Main_model->get_one("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']]);
+            $data = $this->Main_model->get_one("pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual']]);
             echo json_encode($data);
         }
 
-        public function get_detail_pengiriman(){
+        public function get_detail_pembelian(){
             $penjual = $this->_data_penjual();
-            $id_pengiriman = $this->input->post("id_pengiriman");
+            $id_pembelian = $this->input->post("id_pembelian");
 
-            $pengiriman = $this->Main_model->get_one("pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual']]);
-            $data['pengiriman'] = $pengiriman;
-            $data['pengiriman']['tgl_pengiriman_format'] = date('Y-m-d', strtotime($pengiriman['tgl_pengiriman'])) . "T" . date('H:i', strtotime($pengiriman['tgl_pengiriman']));
-            $data['pengiriman']['tgl_pengambilan_format'] = date('Y-m-d', strtotime($pengiriman['tgl_pengambilan'])) . "T" . date('H:i', strtotime($pengiriman['tgl_pengambilan']));
-            $data['pengiriman']['tgl_pengiriman'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengiriman']));
-            $data['pengiriman']['tgl_pengambilan'] = date("d-M-y H:i", strtotime($pengiriman['tgl_pengambilan']));
-            $detail_pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $id_pengiriman, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $pembelian = $this->Main_model->get_one("pembelian_pelanggan", ["id_pembelian" => $id_pembelian, "id_penjual" => $penjual['id_penjual']]);
+            $data['pembelian'] = $pembelian;
+            $data['pembelian']['tgl_pembelian_format'] = date('Y-m-d', strtotime($pembelian['tgl_pembelian'])) . "T" . date('H:i', strtotime($pembelian['tgl_pembelian']));
+            $data['pembelian']['tgl_pembelian'] = date("d-M-y H:i", strtotime($pembelian['tgl_pembelian']));
+            $detail_pembelian = $this->Main_model->get_all("detail_pembelian_pelanggan", ["id_pembelian" => $id_pembelian, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
 
-            $data['detail_pengiriman'] = [];
+            $data['detail_pembelian'] = [];
 
-            foreach ($detail_pengiriman as $i => $detail) {
-                $data['detail_pengiriman'][$i] = $detail;
+            $total = 0;
+            foreach ($detail_pembelian as $i => $detail) {
+                $data['detail_pembelian'][$i] = $detail;
                 $barang = $this->Main_model->get_one("barang", ["id_barang" => $detail['id_barang'], "id_penjual" => $penjual['id_penjual']]);
-                $data['detail_pengiriman'][$i]['kode_barang'] = $barang['kode_barang'];
-                $data['detail_pengiriman'][$i]['nama_barang'] = $barang['nama_barang'];
-                $data['detail_pengiriman'][$i]['stok'] = $this->Other_model->stokBarang($detail['id_barang']);
+                $data['detail_pembelian'][$i]['kode_barang'] = $barang['kode_barang'];
+                $data['detail_pembelian'][$i]['nama_barang'] = $barang['nama_barang'];
+                $data['detail_pembelian'][$i]['stok'] = $this->Other_model->stokBarang($detail['id_barang']);
+                $total += $detail['qty'] * $detail['harga'];
             }
 
+            $data['pembelian']['total'] = $this->Main_model->rupiah($total);
+
             echo json_encode($data);
         }
 
-        // barang yang dijual di suatu toko 
-        public function get_barang_toko(){
+        // barang yang dijual di suatu pelanggan 
+        public function get_barang_pelanggan(){
             $penjual = $this->_data_penjual();
-            $id_toko = $this->input->post("id_toko");
+            $id_pelanggan = $this->input->post("id_pelanggan");
 
             $data = [];
-            $barang_toko = $this->Main_model->get_all("barang_toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
-            foreach ($barang_toko as $i => $barang_toko) {
-                $barang = $this->Main_model->get_one("barang", ["id_barang" => $barang_toko['id_barang']]);
+            $barang_pelanggan = $this->Main_model->get_all("barang_pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            foreach ($barang_pelanggan as $i => $barang_pelanggan) {
+                $barang = $this->Main_model->get_one("barang", ["id_barang" => $barang_pelanggan['id_barang']]);
                 $data[$i] = $barang;
-                $data[$i]['id'] = $barang_toko['id'];
+                $data[$i]['id'] = $barang_pelanggan['id'];
             }
             
             $columns = array_column($data, 'nama_barang');
@@ -394,7 +324,7 @@ class Toko extends CI_Controller {
             echo json_encode($data);
         }
 
-        // daftar seluruh barang yang belum dijual di suatu toko
+        // daftar seluruh barang yang belum dijual di suatu pelanggan
         public function get_all_barang_belum_dikirim(){
 
             $penjual = $this->_data_penjual();
@@ -411,7 +341,7 @@ class Toko extends CI_Controller {
                 $b[$i] = $y['id_barang'];
             }
 
-            // calon barang toko
+            // calon barang pelanggan
             $x = $this->Main_model->get_all("barang", ["hapus" => "0", "id_penjual" => $penjual['id_penjual']], "nama_barang");
             $i = 0;
             foreach ($x as $x) {
@@ -425,7 +355,7 @@ class Toko extends CI_Controller {
             echo json_encode($data);
         }
 
-        // list kecamatan untuk data toko 
+        // list kecamatan untuk data pelanggan 
         public function get_all_kecamatan(){
 
             $penjual = $this->_data_penjual();
@@ -434,33 +364,12 @@ class Toko extends CI_Controller {
 
         }
 
-        // pengiriman terakhir 
-        public function get_pengiriman_terakhir(){
+        // rekap pembelian pelanggan 
+        public function get_rekap_pembelian(){
             $penjual = $this->_data_penjual();
-            $id_toko = $this->input->post("id_toko");
+            $id_pelanggan = $this->input->post("id_pelanggan");
 
-            $pengiriman = $this->Main_model->get_one("pengiriman", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0], "id_pengiriman", "DESC");
-            $barang = $this->Main_model->get_all("detail_pengiriman", ["id_pengiriman" => $pengiriman['id_pengiriman'], "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
-
-            $data['barang'] = [];
-
-            foreach ($barang as $i => $detail) {
-                $data['barang'][$i] = $detail;
-                $barang = $this->Main_model->get_one("barang", ["id_barang" => $detail['id_barang'], "id_penjual" => $penjual['id_penjual']]);
-                $data['barang'][$i]['kode_barang'] = $barang['kode_barang'];
-                $data['barang'][$i]['nama_barang'] = $barang['nama_barang'];
-                $data['barang'][$i]['stok'] = $this->Other_model->stokBarang($barang['id_barang']);
-            }
-
-            echo json_encode($data);
-        }
-
-        // rekap penjualan toko 
-        public function get_rekap_penjualan(){
-            $penjual = $this->_data_penjual();
-            $id_toko = $this->input->post("id_toko");
-
-            $barang = $this->Main_model->select_get_all_join_table_group("SUM(kirim) as total_kirim, SUM(kembali) as total_retur, id_barang", "pengiriman", "detail_pengiriman", "id_pengiriman", ["id_toko" => $id_toko, "status" => "Selesai", "pengiriman.id_penjual" => $penjual['id_penjual']], "id_barang");
+            $barang = $this->Main_model->select_get_all_join_table_group("SUM(qty) as total_qty, id_barang", "pembelian_pelanggan", "detail_pembelian_pelanggan", "id_pembelian", ["id_pelanggan" => $id_pelanggan, "pembelian_pelanggan.id_penjual" => $penjual['id_penjual']], "id_barang");
 
             $data['barang'] = [];
             foreach ($barang as $i => $barang) {
@@ -469,41 +378,41 @@ class Toko extends CI_Controller {
                 $data['barang'][$i]['nama_barang'] = $detail_barang['nama_barang'];
             }
 
-            $data['barang'] = $this->Other_model->sortArray($data['barang'], 'total_kirim', SORT_DESC);
+            $data['barang'] = $this->Other_model->sortArray($data['barang'], 'total_qty', SORT_DESC);
 
-            $data['toko'] = $this->Main_model->get_one("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
-            $data['toko']['pengiriman'] = COUNT($this->Main_model->get_all("pengiriman", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual'], "hapus" => 0, "status" => "Selesai"]));
+            $data['pelanggan'] = $this->Main_model->get_one("pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]);
+            $data['pelanggan']['pembelian'] = COUNT($this->Main_model->get_all("pembelian_pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual'], "hapus" => 0]));
 
             echo json_encode($data);
         }
 
         public function get_prioritas(){
-            $id_toko = $this->input->post("id_toko");
+            $id_pelanggan = $this->input->post("id_pelanggan");
             $penjual = $this->Other_model->_data_penjual();
 
-            $data = $this->Main_model->get_one("prioritas_toko", ["id_toko" => $id_toko, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+            $data = $this->Main_model->get_one("prioritas_pelanggan", ["id_pelanggan" => $id_pelanggan, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
 
             echo json_encode($data);
         }
     // get 
 
     // edit 
-        public function edit_toko(){
+        // pakai 
+        public function edit_pelanggan(){
             $penjual = $this->_data_penjual();
-            $id_toko = $this->input->post("id_toko");
+            $id_pelanggan = $this->input->post("id_pelanggan");
             $kecamatan = $this->input->post('kecamatan');
             
             $data = [
                 "tgl_bergabung" => $this->input->post("tgl_bergabung"),
-                "nama_toko" => $this->input->post("nama_toko"),
+                "nama_pelanggan" => $this->input->post("nama_pelanggan"),
                 "alamat" => $this->input->post("alamat"),
-                "jam_operasional" => $this->input->post("jam_operasional"),
-                "pj" => $this->input->post("pj"),
                 "no_hp" => $this->input->post("no_hp"),
                 "kecamatan" => $kecamatan,
+                "id_penjual" => $penjual['id_penjual'],
             ];
 
-            $data = $this->Main_model->edit_data("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']], $data);
+            $data = $this->Main_model->edit_data("pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual']], $data);
 
             if($data){
 
@@ -566,11 +475,12 @@ class Toko extends CI_Controller {
     // edit 
 
     // delete 
-        public function hapus_toko(){
-            $id_toko = $this->input->post("id_toko");
+        // pakai 
+        public function hapus_pelanggan(){
+            $id_pelanggan = $this->input->post("id_pelanggan");
             $penjual = $this->_data_penjual();
 
-            $data = $this->Main_model->edit_data("toko", ["id_toko" => $id_toko, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
+            $data = $this->Main_model->edit_data("pelanggan", ["id_pelanggan" => $id_pelanggan, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
             if($data){
                 echo json_encode("1");
             } else {
@@ -578,11 +488,11 @@ class Toko extends CI_Controller {
             }
         }
 
-        public function delete_barang_toko(){
+        public function delete_barang_pelanggan(){
             $penjual = $this->_data_penjual();
             $id = $this->input->post("id");
             
-            $data = $this->Main_model->edit_data("barang_toko", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
+            $data = $this->Main_model->edit_data("barang_pelanggan", ["id" => $id, "id_penjual" => $penjual['id_penjual']], ["hapus" => 1]);
             if($data){
                 echo json_encode("1");
             } else {
@@ -626,4 +536,4 @@ class Toko extends CI_Controller {
     }
 }
 
-/* End of file Toko.php */
+/* End of file Pelanggan.php */

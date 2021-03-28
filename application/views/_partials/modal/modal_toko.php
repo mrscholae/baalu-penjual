@@ -145,3 +145,67 @@
         </div>
     </div>
 </div>
+
+<!-- modal prioritas toko  -->
+<div class="modal fade" id="prioritasToko" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="prioritasTokoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="prioritasTokoLabel">Form Prioritas Toko</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body text-gray-900">
+            <input type="hidden" name="id_toko">
+            <div class="form-group">
+                <label for="">Nama Toko</label>
+                <input type="text" name="nama_toko" id="" class="form-control form-control-sm" readonly>
+            </div>
+            <h3>List Prioritas</h3>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="jarak" id="jarak" class="custom-control-input">
+                    <label class="custom-control-label" for="jarak">Jarak Dekat</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="pelayanan" id="pelayanan" class="custom-control-input">
+                    <label class="custom-control-label" for="pelayanan">Pelayanan Mitra</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="repeat_order" id="repeat_order" class="custom-control-input">
+                    <label class="custom-control-label" for="repeat_order">Repeat Order Cepat</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="retur" id="retur" class="custom-control-input">
+                    <label class="custom-control-label" for="retur">Tidak Ada Retur</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="pengunjung" id="pengunjung" class="custom-control-input">
+                    <label class="custom-control-label" for="pengunjung">Traffic Pengunjung Bagus</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox small">
+                    <input type="checkbox" name="prioritas" value="min_order" id="min_order" class="custom-control-input">
+                    <label class="custom-control-label" for="min_order">Minimal Order 24 pcs</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <form action="" class="user">
+                <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary btn-user btnSimpan">Simpan</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>

@@ -1,19 +1,19 @@
-// modal add pengiriman
-    // when tombol add pengiriman click (tombol gambar truk)
-    $(document).on("click", ".addPengiriman", function(){
-        $("#formAddPengiriman").hide();
-        $("#btnFormAddPengiriman").hide();
-        $("#btnFormKirim").show();
-        $("#listAllBarang").show();
+// modal add pembelian
+    // when tombol add pembelian click (tombol gambar truk)
+    $(document).on("click", ".addPembelian", function(){
+        let form = "#addPembelian";
+
+        $(form+" .form-1").show();
+        $(form+" .form-2").hide();
 
         let data = $(this).data("id");
         data = data.split("|");
 
-        let id_toko = data[0];
-        let nama_toko = data[1];
+        let id_pelanggan = data[0];
+        let nama_pelanggan = data[1];
 
-        $("#nama_toko_pengiriman").val(nama_toko);
-        $("#id_toko_pengiriman").val(id_toko);
+        $(form+" input[name='nama_pelanggan']").val(nama_pelanggan);
+        $(form+" input[name='id_pelanggan']").val(id_pelanggan);
 
         let result = ajax(url_base+"barang/get_all_barang");
 
@@ -23,86 +23,27 @@
             html += `
                 <div class="form-group text-gray-900">
                     <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`|`+data.stok+`" class="custom-control-input" id="addPengiriman`+data.id_barang+`">
-                        <label class="custom-control-label" for="addPengiriman`+data.id_barang+`">`+data.nama_barang+` (`+data.stok+`)</label>
+                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`|`+data.stok+`" class="custom-control-input" id="addPembelian`+data.id_barang+`">
+                        <label class="custom-control-label" for="addPembelian`+data.id_barang+`">`+data.nama_barang+` (`+data.stok+`)</label>
                     </div>
                 </div>
             `
         });
 
-        $(".listBarang").html(html);
+        $(form+" .listItem").html(html);
+
+        $(form+" .modal-footer").removeClass("justify-content-between");
+        $(form+" .modal-footer").html(`<form action="" class="user">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-success btn-user btnNext">Next <i class="fa fa-arrow-right ml-1"></i></button>
+            </div>
+        </form>`);
     })
 
-    // when tombol add pengiriman ulang click (tombol repeat)
-    $(document).on("click", ".addPengirimanUlang", function(){
-        $("#formAddPengiriman").show();
-        $("#btnFormAddPengiriman").show();
-        $("#btnFormKirim").hide();
-        $("#listAllBarang").hide();
-
-        let data = $(this).data("id");
-        data = data.split("|");
-
-        let id_toko = data[0];
-        let nama_toko = data[1];
-
-        $("#nama_toko_pengiriman").val(nama_toko);
-        $("#id_toko_pengiriman").val(id_toko);
-
-        let result = ajax(url_base+"barang/get_all_barang");
-
-        let html = "";
-
-        result.forEach(data => {
-            html += `
-                <div class="form-group text-gray-900">
-                    <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" name="barang" value="`+data.id_barang+`|`+data.kode_barang+`|`+formatRupiah(data.bagi_hasil, 'Rp. ')+`|`+formatRupiah(data.harga, 'Rp. ')+`|`+data.stok+`" class="custom-control-input" id="addPengirimanUlang`+data.id_barang+`">
-                        <label class="custom-control-label" for="addPengirimanUlang`+data.id_barang+`">`+data.nama_barang+`</label>
-                    </div>
-                </div>
-            `
-        });
-
-        $(".listBarang").html(html);
-
-        data = {id_toko: id_toko};
-
-        result = ajax(url_base+"toko/get_pengiriman_terakhir", "POST", data);
-        html = "";
-        
-        i = 1;
-        result.barang.forEach(barang => {
-            html += `
-                <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">`+i+`. `+barang.kode_barang+` (`+barang.stok+`)</span>
-                    </div>
-                    <input type="hidden" name="id_barang_pengiriman" value="`+barang.id_barang+`">
-                    <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="`+barang.kirim+`">
-                </div>
-                <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Harga</span>
-                    </div>
-                    <input type="text" name="harga_jual" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+formatRupiah(barang.harga, "Rp. ")+`">
-                </div>
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">BH</span>
-                    </div>
-                    <input type="text" name="bh" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+formatRupiah(barang.bagi_hasil, "Rp. ")+`">
-                </div>`;
-
-                i++;
-        });
-
-        $(".listBarangPengiriman").html(html);
-    })
-
-    // when tombol kirim click in modal add pengiriman
-    $("#btnKirim").click(function(){
-        var atLeastOneIsChecked = $('input[name="barang"]:checked').length;
+    // when tombol next click in modal add pembelian
+    $(document).on("click","#addPembelian .btnNext", function(){
+        form = "#addPembelian"
+        var atLeastOneIsChecked = $(form+' input[name="barang"]:checked').length;
         if(atLeastOneIsChecked == 0){
             Swal.fire({
                 icon: 'error',
@@ -110,9 +51,12 @@
                 text: 'pilih barang yang akan dikirim terlebih dahulu'
             })
         } else {
+            $(form+" .form-1").hide();
+            $(form+" .form-2").show();
+
             let i = 1;
             html = "";
-            $.each($("input[name='barang']:checked"), function(){
+            $.each($(form+" input[name='barang']:checked"), function(){
                 data = $(this).val();
                 data = data.split("|");
                 id_barang = data[0];
@@ -126,58 +70,70 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+i+`. `+kode_barang+` (`+stok+`)</span>
                     </div>
-                    <input type="hidden" name="id_barang_pengiriman" value="`+id_barang+`">
-                    <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="0">
-                </div>
-                <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Harga</span>
-                    </div>
-                    <input type="text" name="harga_jual" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+harga+`">
+                    <input type="hidden" name="id_barang" value="`+id_barang+`">
+                    <input type="number" name="qty" class="form-control" aria-label="Amount (to the nearest dollar)" value="">
                 </div>
                 <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">BH</span>
+                        <span class="input-group-text">Harga</span>
                     </div>
-                    <input type="text" name="bh" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+bagi_hasil+`">
+                    <input type="text" name="harga" class="form-control rupiah" aria-label="Amount (to the nearest dollar)" value="`+harga+`">
                 </div>`;
 
                 i++;
             });
 
-            $(".listBarangPengiriman").html(html);
+            $(form+" .listItem2").html(html);
             
-            $("#btnFormKirim").hide();
-            $("#formAddPengiriman").show();
-            $("#btnFormAddPengiriman").show();
-            $("#listAllBarang").hide();
+            $(form+" .modal-footer").addClass("justify-content-between");
+            $(form+" .modal-footer").html(`<form action="" class="user">
+                <span>
+                    <button type="button" class="btn btn-success btn-user btnBack"><i class="fa fa-arrow-left mr-1"></i> back</button>
+                </span>
+            </form>
+            <form action="" class="user">
+                <span>
+                    <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary btn-user btnSimpan">Simpan</button>
+                </span>
+            </form>`);
         }
     })
 
-    // when tombol barang click in modal add pengiriman 
-    $("#btnBarang").click(function(){
-        $("#btnFormKirim").show();
-        $("#formAddPengiriman").hide();
-        $("#btnFormAddPengiriman").hide();
-        $("#listAllBarang").show();
+    // when tombol barang click in modal add pembelian 
+    $(document).on("click", "#addPembelian .btnBack", function(){
+        form = "#addPembelian";
+
+        $(form+" .form-1").show();
+        $(form+" .form-2").hide();
+        
+        $(form+" .modal-footer").removeClass("justify-content-between");
+        $(form+" .modal-footer").html(`<form action="" class="user">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-success btn-user btnNext">Next <i class="fa fa-arrow-right ml-1"></i></button>
+            </div>
+        </form>`);
     })
 
-    // when tombol simpan click in modal add pengiriman 
-    $("#btnAddPengiriman").click(function(){
+    // when tombol simpan click in modal add pembelian 
+    $(document).on("click", "#addPembelian .btnSimpan", function(){
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan menambahkan pengiriman?',
+            text: 'Yakin akan menambahkan pembelian pelanggan?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
             cancelButtonText: 'Tidak'
         }).then(function (result) {
             if (result.value) {
-                let id_toko = $("#id_toko_pengiriman").val();
-                let tgl_pengiriman = $("#tgl_pengiriman_add").val();
-                let tgl_pengambilan = $("#tgl_pengambilan_add").val();
+                let form = "#addPembelian";
 
-                if(tgl_pengiriman == "" || tgl_pengambilan == ""){
+                let id_pelanggan = $(form+" input[name='id_pelanggan']").val();
+                let tgl_pembelian = $(form+" input[name='tgl_pembelian']").val();
+
+                let eror = required(form);
+        
+                if( eror == 1){
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -185,15 +141,15 @@
                     })
                 } else {
                     id_barang = new Array();
-                    $.each($("input[name='id_barang_pengiriman']"), function(){
+                    $.each($(form+" input[name='id_barang']"), function(){
                         id_barang.push($(this).val());
                     });
                     
                     // untuk cek jik ada field yang tak diisi atau bernilai tidak sesuai
-                    let eror = 0;
+                    eror = 0;
 
                     qty = new Array();
-                    $.each($("input[name='qty']"), function(){
+                    $.each($(form+" input[name='qty']"), function(){
                         qty.push($(this).val());
 
                         if($(this).val() == 0 || $(this).val() == ""){
@@ -203,7 +159,7 @@
                     });
 
                     harga = new Array();
-                    $.each($("input[name='harga_jual']"), function(){
+                    $.each($(form+" input[name='harga']"), function(){
                         harga.push($(this).val());
 
                         if($(this).val() == "Rp. 0" || $(this).val() == ""){
@@ -212,28 +168,18 @@
 
                     });
 
-                    bh = new Array();
-                    $.each($("input[name='bh']"), function(){
-                        bh.push($(this).val());
-
-                        if($(this).val() == ""){
-                            eror = 1;
-                        }
-
-                    });
-
                     if(eror == 0){
-                        data = {id_toko: id_toko, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan, id_barang:id_barang, qty:qty, harga:harga, bh:bh}
-                        let result = ajax(url_base+"toko/add_pengiriman", "POST", data);
+                        data = {id_pelanggan: id_pelanggan, tgl_pembelian: tgl_pembelian, id_barang:id_barang, qty:qty, harga:harga}
+                        let result = ajax(url_base+"pelanggan/add_pembelian", "POST", data);
 
                         if(result == 1){
                             reload_data();
-                            $("#addPengiriman").modal("hide");
+                            $("#addPembelian").modal("hide");
 
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                text: 'Berhasil menambahkan pengiriman',
+                                text: 'Berhasil menambahkan pembelian',
                                 showConfirmButton: false,
                                 timer: 1500
                             })
@@ -248,35 +194,35 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'inputkan jumlah barang, jumlah barang tidak boleh 0 atau kosong'
+                            text: 'lengkapi isi form'
                         })
                     }
                 }
             }
         })
     })
-// modal add pengiriman 
+// modal add pembelian 
 
-// edit pengiriman 
-    function data_edit_pengiriman(id_pengiriman){
+// edit pembelian 
+    function data_edit_pembelian(id_pembelian){
                 
-        let data = {id_pengiriman:id_pengiriman};
+        let data = {id_pembelian:id_pembelian};
 
-        let result = ajax(url_base+"toko/get_detail_pengiriman", "POST", data);
+        let result = ajax(url_base+"pelanggan/get_detail_pembelian", "POST", data);
 
         // console.log(result);
 
-        $("#id_pengiriman_edit").val(result.pengiriman.id_pengiriman);
-        $(".nama_toko_edit_pengiriman").val(result.pengiriman.nama_toko);
-        $("#tgl_pengiriman_edit").val(result.pengiriman.tgl_pengiriman_format);
-        $("#tgl_pengambilan_edit").val(result.pengiriman.tgl_pengambilan_format);
+        $("#id_pembelian_edit").val(result.pembelian.id_pembelian);
+        $(".nama_pelanggan_edit_pembelian").val(result.pembelian.nama_pelanggan);
+        $("#tgl_pembelian_edit").val(result.pembelian.tgl_pembelian_format);
+        $("#tgl_pengambilan_edit").val(result.pembelian.tgl_pengambilan_format);
 
         html = "";
         i = 1;
 
-        if(result.detail_pengiriman.length != 0){
+        if(result.detail_pembelian.length != 0){
             
-            result.detail_pengiriman.forEach(data => {
+            result.detail_pembelian.forEach(data => {
                 
                 html += `
                 <div class="input-group input-group-sm">
@@ -286,7 +232,7 @@
                     <input type="hidden" name="id_detail_edit" value="`+data.id+`">
                     <input type="number" name="qty_edit" class="form-control" value="`+data.kirim+`" aria-label="Amount (to the nearest dollar)">
                     <div class="input-group-prepend">
-                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDeleteDetailPengiriman" data-id="`+data.id+`|`+data.id_pengiriman+`|`+data.nama_barang+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
+                        <span class="input-group-text"><a href="javascript:void(0)" class="btnDeleteDetailPembelian" data-id="`+data.id+`|`+data.id_pembelian+`|`+data.nama_barang+`"><i class="fa fa-trash-alt text-danger"></i></a></span>
                     </div>
                 </div>
                 
@@ -310,9 +256,9 @@
             html += `<div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning"></i>list barang kosong</div>`
         }
 
-        $("#editPengirimanBarang").html(html);
+        $("#editPembelianBarang").html(html);
 
-        result = ajax(url_base+"toko/get_all_barang_belum_dikirim", "POST", data);
+        result = ajax(url_base+"pelanggan/get_all_barang_belum_dikirim", "POST", data);
 
         html = "";
         if(result.length != 0){
@@ -330,57 +276,46 @@
                 <div class="alert alert-warning"><i class="fa fa-exclamation-circle text-warning mr-1"></i>list barang kosong</div>`
         }
 
-        $("#editPengirimanTambahList").html(html)
+        $("#editPembelianTambahList").html(html)
 
     }
 
-    // when detail pengiriman click
-    $(document).on("click", ".btnDetailPengiriman", function(){
-        let id_pengiriman = $(this).data("id");
-        // console.log(id_pengiriman)
-        let data = {id_pengiriman:id_pengiriman};
+    // when detail pembelian click
+    $(document).on("click", ".detailPembelian", function(){
+        let form = "#detailPembelian";
 
-        let result = ajax(url_base+"toko/get_detail_pengiriman", "POST", data);
+        let id_pembelian = $(this).data("id");
+        // console.log(id_pembelian)
+        let data = {id_pembelian:id_pembelian};
+
+        let result = ajax(url_base+"pelanggan/get_detail_pembelian", "POST", data);
         
         html = "";
         
         html += `
-            <li class="list-group-item list-group-item-info"><i class="fa fa-mail mr-1"></i>Data Pengiriman</li>
+            <li class="list-group-item list-group-item-info"><i class="fa fa-mail mr-1"></i>Data Pembelian</li>
             <li class="list-group-item">
-                <p><i class="fa fa-store mr-3"></i>`+result.pengiriman.nama_toko+`</p>
-                <p><i class="fa fa-info-circle mr-3"></i>`+result.pengiriman.status+`</p>
-                <p><i class="fa fa-truck mr-3"></i>`+result.pengiriman.tgl_pengiriman+`</p>
-                <p><i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>`+result.pengiriman.tgl_pengambilan+`</p>
+                <p><i class="fa fa-store mr-3"></i>`+result.pembelian.nama_pelanggan+`</p>
+                <p><i class="fa fa-truck mr-3"></i>`+result.pembelian.tgl_pembelian+`</p>
+                <p><i class="fa fa-dollar-sign mr-4"></i>`+formatRupiah(result.pembelian.total, "Rp. ")+`</p>
             </li>`
 
-        $(".detailPengirimanData").html(html);
+        $(form+" .listData").html(html);
 
         
         html = "";
-        if(result.detail_pengiriman.length != 0){
+        if(result.detail_pembelian.length != 0){
             i = 1;
-            result.detail_pengiriman.forEach(data => {
-                if(result.pengiriman.status == "Selesai") {
-                    kembali = `<i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>`+data.kembali;
-                } else {
-                    kembali = `<i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>-`;
-                }
-
+            result.detail_pembelian.forEach(data => {
                 html += `
                     <li class="list-group-item list-group-item-primary d-flex justify-content-between">
-                        <span>`+i+`. `+data.kode_barang+`</span>
-                        <span>
-                            <i class="fa fa-truck mr-3"></i>`+data.kirim+`
-                        </span>
-                        <span>
-                            `+kembali+`
-                        </span>
+                        <span>`+i+`. `+data.nama_barang+`</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
-                        <span><i class="fa fa-dollar-sign mr-1"></i>`+formatRupiah(data.harga, "Rp. ")+`</span>
                         <span>
-                            <i class="fa fa-handshake mr-1"></i>`+formatRupiah(data.bagi_hasil, "Rp. ")+`
+                            <i class="fa fa-shopping-bag mr-3"></i>`+data.qty+`
                         </span>
+                        <span><i class="fa fa-dollar-sign mr-1"></i>`+formatRupiah(data.harga, "Rp. ")+`</span>
                     </li>`
                     
                 i++;
@@ -391,11 +326,11 @@
             `
         }
 
-        $(".detailPengirimanListBarang").html(html);
+        $(form+" .listItem").html(html);
     })
     
-    // when edit pengiriman click
-    $(document).on("click", ".btnEditPengiriman", function(){
+    // when edit pembelian click
+    $(document).on("click", ".btnEditPembelian", function(){
         
         // button form
         $(".btn-form-1").addClass("active");
@@ -414,28 +349,28 @@
 
         $(".footer-3-1").hide();
         
-        let id_pengiriman = $(this).data("id");
+        let id_pembelian = $(this).data("id");
 
-        data_edit_pengiriman(id_pengiriman);
+        data_edit_pembelian(id_pembelian);
 
     })
     
-    // when tombol simpan click in modal edit pengiriman 
-    $("#btnEditPengiriman").click(function(){
+    // when tombol simpan click in modal edit pembelian 
+    $("#btnEditPembelian").click(function(){
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan mengubah data pengiriman?',
+            text: 'Yakin akan mengubah data pembelian?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
             cancelButtonText: 'Tidak'
         }).then(function (result) {
             if (result.value) {
-                let id_pengiriman = $("#id_pengiriman_edit").val();
-                let tgl_pengiriman = $("#tgl_pengiriman_edit").val();
+                let id_pembelian = $("#id_pembelian_edit").val();
+                let tgl_pembelian = $("#tgl_pembelian_edit").val();
                 let tgl_pengambilan = $("#tgl_pengambilan_edit").val();
 
-                if(tgl_pengiriman == "" || tgl_pengambilan == ""){
+                if(tgl_pembelian == "" || tgl_pengambilan == ""){
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
@@ -443,8 +378,8 @@
                     })
                 } else {
 
-                    data = {id_pengiriman: id_pengiriman, tgl_pengiriman: tgl_pengiriman, tgl_pengambilan: tgl_pengambilan}
-                    let result = ajax(url_base+"toko/edit_pengiriman", "POST", data);
+                    data = {id_pembelian: id_pembelian, tgl_pembelian: tgl_pembelian, tgl_pengambilan: tgl_pengambilan}
+                    let result = ajax(url_base+"pelanggan/edit_pembelian", "POST", data);
 
                     if(result == 1){
                         reload_data();
@@ -452,7 +387,7 @@
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            text: 'Berhasil mengubah data pengiriman',
+                            text: 'Berhasil mengubah data pembelian',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -468,18 +403,18 @@
         })
     })
     
-    // when tombol trash click in modal edit pengiriman barang 
-    $(document).on("click",".btnDeleteDetailPengiriman",function(){
+    // when tombol trash click in modal edit pembelian barang 
+    $(document).on("click",".btnDeleteDetailPembelian",function(){
         let data = $(this).data("id");
         data = data.split("|");
 
         let id = data[0];
-        let id_pengiriman = data[1];
+        let id_pembelian = data[1];
         let kode_barang = data[2]
         
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan menghapus '+kode_barang+' dari pengiriman?',
+            text: 'Yakin akan menghapus '+kode_barang+' dari pembelian?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
@@ -488,25 +423,25 @@
             if (result.value) {
                 data = {id: id}
 
-                let result = ajax(url_base+"toko/delete_detail_pengiriman", "POST", data);
+                let result = ajax(url_base+"pelanggan/delete_detail_pembelian", "POST", data);
 
                 if(result == 1){
                     
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        text: 'Berhasil menghapus barang dari pengiriman',
+                        text: 'Berhasil menghapus barang dari pembelian',
                         showConfirmButton: false,
                         timer: 1500
                     })
 
-                    data_edit_pengiriman(id_pengiriman);
+                    data_edit_pembelian(id_pembelian);
 
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'terjadi kesalahan, gagal menghapus barang dari pengiriman'
+                        text: 'terjadi kesalahan, gagal menghapus barang dari pembelian'
                     })
                 }
             }
@@ -514,17 +449,17 @@
     })
     
     // when tombol simpan edit barang click
-    $("#btnEditPengirimanBarang").click(function(){
+    $("#btnEditPembelianBarang").click(function(){
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan mengubah detail barang pengiriman?',
+            text: 'Yakin akan mengubah detail barang pembelian?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
             cancelButtonText: 'Tidak'
         }).then(function (result) {
             if (result.value) {
-                id_pengiriman = $("#id_pengiriman_edit").val();
+                id_pembelian = $("#id_pembelian_edit").val();
 
                 id_detail = new Array();
                 $.each($("input[name='id_detail_edit']"), function(){
@@ -566,16 +501,16 @@
 
                 if(eror == 0){
                     data = {id_detail:id_detail, qty:qty, harga:harga, bh:bh}
-                    let result = ajax(url_base+"toko/edit_barang_pengiriman", "POST", data);
+                    let result = ajax(url_base+"pelanggan/edit_barang_pembelian", "POST", data);
 
                     if(result == 1){
-                        data_edit_pengiriman(id_pengiriman);
-                        $("#addPengiriman").modal("hide");
+                        data_edit_pembelian(id_pembelian);
+                        $("#addPembelian").modal("hide");
 
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            text: 'Berhasil mengubah detail pengiriman barang',
+                            text: 'Berhasil mengubah detail pembelian barang',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -598,21 +533,21 @@
         })
     })
     
-    // when tombol delete pengiriman click 
-    $(document).on("click", ".bthHapusPengiriman", function(){
-        let id_pengiriman = $(this).data("id");
+    // when tombol delete pembelian click 
+    $(document).on("click", ".bthHapusPembelian", function(){
+        let id_pembelian = $(this).data("id");
 
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan menghapus data pengiriman?',
+            text: 'Yakin akan menghapus data pembelian?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
             cancelButtonText: 'Tidak'
         }).then(function (result) {
             if (result.value) {
-                data = {id_pengiriman: id_pengiriman}
-                let result = ajax(url_base+"toko/hapus_pengiriman", "POST", data);
+                data = {id_pembelian: id_pembelian}
+                let result = ajax(url_base+"pelanggan/hapus_pembelian", "POST", data);
 
                 if(result == 1){
                     reload_data();
@@ -620,7 +555,7 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        text: 'Berhasil menghapus data pengiriman',
+                        text: 'Berhasil menghapus data pembelian',
                         showConfirmButton: false,
                         timer: 1500
                     })
@@ -628,7 +563,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'terjadi kesalahan, gagal menghapus data pengiriman'
+                        text: 'terjadi kesalahan, gagal menghapus data pembelian'
                     })
                 }
             }
@@ -637,22 +572,22 @@
     
     // when button circle bg warning clicked
     $(document).on("click", ".btnAddPengambilan", function(){
-        let id_pengiriman = $(this).data("id");
-        // console.log(id_pengiriman)
-        let data = {id_pengiriman:id_pengiriman};
+        let id_pembelian = $(this).data("id");
+        // console.log(id_pembelian)
+        let data = {id_pembelian:id_pembelian};
 
-        let result = ajax(url_base+"toko/get_detail_pengiriman", "POST", data);
+        let result = ajax(url_base+"pelanggan/get_detail_pembelian", "POST", data);
 
         // console.log(result);
         
-        $("#id_pengiriman_pengambilan").val(result.pengiriman.id_pengiriman)
-        $("#nama_toko_pengambilan").val(result.pengiriman.nama_toko)
-        $("#tgl_pengiriman_pengambilan").val(result.pengiriman.tgl_pengiriman)
-        $("#tgl_pengambilan_pengambilan").val(result.pengiriman.tgl_pengambilan)
+        $("#id_pembelian_pengambilan").val(result.pembelian.id_pembelian)
+        $("#nama_pelanggan_pengambilan").val(result.pembelian.nama_pelanggan)
+        $("#tgl_pembelian_pengambilan").val(result.pembelian.tgl_pembelian)
+        $("#tgl_pengambilan_pengambilan").val(result.pembelian.tgl_pengambilan)
         
         i = 1;
         html = "";
-        result.detail_pengiriman.forEach(data => {
+        result.detail_pembelian.forEach(data => {
             
             html += `<div class="input-group input-group-sm mb-1">
                 <div class="input-group-prepend">
@@ -679,7 +614,7 @@
             cancelButtonText: 'Tidak'
         }).then(function (result) {
             if (result.value) {
-                id_pengiriman = $("#id_pengiriman_pengambilan").val();
+                id_pembelian = $("#id_pembelian_pengambilan").val();
 
                 id_detail = new Array();
                 $.each($("input[name='id_detail']"), function(){
@@ -700,8 +635,8 @@
                 });
 
                 if(eror == 0){
-                    data = {id_pengiriman:id_pengiriman, id_detail:id_detail, qty:qty}
-                    let result = ajax(url_base+"toko/add_pengambilan", "POST", data);
+                    data = {id_pembelian:id_pembelian, id_detail:id_detail, qty:qty}
+                    let result = ajax(url_base+"pelanggan/add_pengambilan", "POST", data);
 
                     if(result == 1){
                         reload_data();
@@ -732,8 +667,8 @@
         })
     })
     
-    // when tombol kirim click in modal edit pengiriman
-    $(document).on("click", "#btnEditPengirimanTambah", function(){
+    // when tombol kirim click in modal edit pembelian
+    $(document).on("click", "#btnEditPembelianTambah", function(){
         var atLeastOneIsChecked = $('input[name="barang"]:checked').length;
         if(atLeastOneIsChecked == 0){
             Swal.fire({
@@ -757,7 +692,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">`+i+`. `+kode_barang+` (`+stok+`)</span>
                     </div>
-                    <input type="hidden" name="id_barang_pengiriman_tambah" value="`+id_barang+`">
+                    <input type="hidden" name="id_barang_pembelian_tambah" value="`+id_barang+`">
                     <input type="number" name="qty_tambah" class="form-control" aria-label="Amount (to the nearest dollar)" value="0">
                 </div>
                 <div class="input-group input-group-sm">
@@ -776,23 +711,23 @@
                 i++;
             });
 
-            $("#editPengirimanTambahBarang").html(html);
+            $("#editPembelianTambahBarang").html(html);
             
-            $("#editPengirimanTambahList").hide();
-            $("#editPengirimanTambahBarang").show();
+            $("#editPembelianTambahList").hide();
+            $("#editPembelianTambahBarang").show();
             
-            $("#btnEditPengirimanTambah").hide();
+            $("#btnEditPembelianTambah").hide();
             $(".footer-3").html(`
                 <div class="modal-footer justify-content-between">
                     <form action="" class="user">
                         <span>
-                            <button type="button" class="btn btn-success btn-user" id="btnBarangEditPengiriman"><i class="fa fa-arrow-left mr-1"></i> barang</button>
+                            <button type="button" class="btn btn-success btn-user" id="btnBarangEditPembelian"><i class="fa fa-arrow-left mr-1"></i> barang</button>
                         </span>
                     </form>
                     <form action="" class="user">
                         <span>
                             <button type="button" class="btn btn-secondary btn-user" data-dismiss="modal">Tutup</button>
-                            <button type="button" class="btn btn-primary btn-user" id="editPengirimanTambahSimpan">Simpan</button>
+                            <button type="button" class="btn btn-primary btn-user" id="editPembelianTambahSimpan">Simpan</button>
                         </span>
                     </form>
                 </div>
@@ -801,26 +736,26 @@
     })
     
     // when tombol barang clicked 
-    $(document).on("click", "#btnBarangEditPengiriman", function(){
-        $("#editPengirimanTambahList").show();
-        $("#editPengirimanTambahBarang").hide();
+    $(document).on("click", "#btnBarangEditPembelian", function(){
+        $("#editPembelianTambahList").show();
+        $("#editPembelianTambahBarang").hide();
 
         $(".footer-3").html(`
             <div class="modal-footer">
                 <form action="" class="user">
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanTambah"><i class="fa fa-plus mr-1"></i> Tambah</button>
+                        <button type="button" class="btn btn-success btn-user" id="btnEditPembelianTambah"><i class="fa fa-plus mr-1"></i> Tambah</button>
                     </div>
                 </form>
             </div>
         `);
     })
     
-    // when tombol simpan click in modal edit pengiriman tambah barang
-    $(document).on("click", "#editPengirimanTambahSimpan", function(){
+    // when tombol simpan click in modal edit pembelian tambah barang
+    $(document).on("click", "#editPembelianTambahSimpan", function(){
         Swal.fire({
             icon: 'question',
-            text: 'Yakin akan menambahkan barang pada pengiriman ini?',
+            text: 'Yakin akan menambahkan barang pada pembelian ini?',
             showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: 'Ya',
@@ -828,10 +763,10 @@
         }).then(function (result) {
             if (result.value) {
 
-                let id_pengiriman = $("#id_pengiriman_edit").val();
+                let id_pembelian = $("#id_pembelian_edit").val();
 
                 id_barang = new Array();
-                $.each($("input[name='id_barang_pengiriman_tambah']"), function(){
+                $.each($("input[name='id_barang_pembelian_tambah']"), function(){
                     id_barang.push($(this).val());
                 });
                 
@@ -866,8 +801,8 @@
                 });
 
                 if(eror == 0){
-                    data = {id_pengiriman:id_pengiriman, id_barang:id_barang, qty:qty, harga:harga, bh:bh}
-                    let result = ajax(url_base+"toko/add_barang_pengiriman", "POST", data);
+                    data = {id_pembelian:id_pembelian, id_barang:id_barang, qty:qty, harga:harga, bh:bh}
+                    let result = ajax(url_base+"pelanggan/add_barang_pembelian", "POST", data);
 
                     if(result == 1){
             
@@ -886,17 +821,17 @@
                         $(".footer-2").show();
                         $(".footer-3").hide();
 
-                        data_edit_pengiriman(id_pengiriman);
+                        data_edit_pembelian(id_pembelian);
 
                         
-                        $("#editPengirimanTambahList").show()
-                        $("#editPengirimanTambahBarang").hide()
+                        $("#editPembelianTambahList").show()
+                        $("#editPembelianTambahBarang").hide()
 
                         $(".footer-3").html(`
                             <div class="modal-footer">
                                 <form action="" class="user">
                                     <div class="d-flex justify-content-end">
-                                        <button type="button" class="btn btn-success btn-user" id="btnEditPengirimanTambah"><i class="fa fa-plus mr-1"></i> Tambah</button>
+                                        <button type="button" class="btn btn-success btn-user" id="btnEditPembelianTambah"><i class="fa fa-plus mr-1"></i> Tambah</button>
                                     </div>
                                 </form>
                             </div>
@@ -906,7 +841,7 @@
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            text: 'Berhasil menambahkan barang pengiriman',
+                            text: 'Berhasil menambahkan barang pembelian',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -927,10 +862,10 @@
             }
         })
     })
-// edit pengiriman 
+// edit pembelian 
 
 // tambah 3 hari dari tanggal pengambilan 
-    $("#tgl_pengiriman_add").change(function(){
+    $("#tgl_pembelian_add").change(function(){
         let tgl = new Date($(this).val());
         tgl = tgl.addDays(3);
 

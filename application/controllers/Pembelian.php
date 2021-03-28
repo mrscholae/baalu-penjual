@@ -229,7 +229,7 @@ class Pembelian extends CI_Controller {
 
             foreach ($detail as $i => $detail) {
                 $data['detail_pembelian'][$i] = $detail;
-                $data['detail_pembelian'][$i]['harga_satuan'] = strval($detail['harga_total'] / $detail['qty']);
+                $data['detail_pembelian'][$i]['harga_satuan'] = $this->Main_model->rupiah(ceil($detail['harga_total'] / $detail['qty']));
                 $total += $detail['harga_total'];
             }
 

@@ -33,6 +33,29 @@ class Other_model extends CI_Model {
         return array_pop($funcArgument);
     }
 
+    function stokBarang($id_barang){
+        $penjual = $this->_data_penjual();
+
+        $qty = 0;
+        $produksi = $this->Main_model->get_all("detail_produksi_barang", ["id_barang" => $id_barang, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+        foreach ($produksi as $produksi) {
+            $qty += $produksi['berhasil'];
+        }
+        
+        $pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_barang" => $id_barang, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+        foreach ($pengiriman as $pengiriman) {
+            $qty -= $pengiriman['kirim'];
+        }
+
+
+        // pembelian pelanggan 
+        $pembelian = $this->Main_model->get_all("detail_pembelian_pelanggan", ["id_barang" => $id_barang, "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
+        foreach ($pembelian as $pembelian) {
+            $qty -= $pembelian['qty'];
+        }
+
+        return $qty;
+    }
 }
 
 /* End of file Other_model.php */

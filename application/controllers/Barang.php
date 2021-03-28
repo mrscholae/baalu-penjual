@@ -10,6 +10,7 @@ class Barang extends CI_Controller {
     {
         parent::__construct();
         $this->load->model("Main_model");
+        $this->load->model("Other_model");
         
         if(!$this->session->userdata('username')){
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa fa-times-circle text-danger mr-1"></i> Maaf Anda harus login terlebih dahulu<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div');
@@ -51,18 +52,7 @@ class Barang extends CI_Controller {
                 $data[$i]['harga'] = $this->Main_model->rupiah($barang['harga']);
                 $data[$i]['bagi_hasil'] = $this->Main_model->rupiah($barang['bagi_hasil']);
 
-                $qty = 0;
-                $produksi = $this->Main_model->get_all("detail_produksi_barang", ["id_barang" => $barang['id_barang'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
-                foreach ($produksi as $produksi) {
-                    $qty += ($produksi['berhasil'] + $produksi['gagal']);
-                }
-                
-                $pengiriman = $this->Main_model->get_all("detail_pengiriman", ["id_barang" => $barang['id_barang'], "hapus" => 0, "id_penjual" => $penjual['id_penjual']]);
-                foreach ($pengiriman as $pengiriman) {
-                    $qty -= $pengiriman['kirim'];
-                }
-
-                $data[$i]['stok'] = $qty;
+                $data[$i]['stok'] = $this->Other_model->stokBarang($barang['id_barang']);
             }
 
             echo json_encode($data);
@@ -102,8 +92,15 @@ class Barang extends CI_Controller {
 
         public function get_all_barang(){
             $penjual = $this->_data_penjual();
+            
+            $data = [];
 
-            $data = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_barang");
+            $barang = $this->Main_model->get_all("barang", ["id_penjual" => $penjual['id_penjual'], "hapus" => 0], "nama_barang");
+            foreach ($barang as $i => $barang) {
+                $data[$i] = $barang;
+                $data[$i]['stok'] = $this->Other_model->stokBarang($barang['id_barang']);
+            }
+
             echo json_encode($data);
         }
     // get 

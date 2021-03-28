@@ -52,6 +52,15 @@ function createTable(data,sno){
                 <h6 class="m-0 font-weight-bold text-dark"><i class="fa fa-check-circle text-success mr-1"></i>Selesai</h6>`
 
             pengambilan = ``;
+            
+            dropdown = `<a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data[index].id_pengiriman+`" data-toggle="modal">Detail</a>`;
+
+            total = `<p><i class="fa fa-hand-holding-usd mr-3 text-success"></i>`+data[index].total+`</p>`;
+            
+            arsip = `<div class="d-flex justify-content-center mt-1">
+                <a href="javascript:void(0)" data-toggle="modal" data-id="`+data[index].id_pengiriman+`" class="btn btn-circle btn-warning mr-1 btnArsip"><i class="fa fa-archive"></i></a>
+            </div>`;
+
         } else {
             status = `
             <div class="list-group-item-warning card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -61,6 +70,15 @@ function createTable(data,sno){
             pengambilan = `<div class="d-flex justify-content-center mt-1">
                 <a href="#addPengambilan" data-toggle="modal" data-id="`+data[index].id_pengiriman+`" class="btn btn-circle btn-warning mr-1 btnAddPengambilan"><i class="fa fa-hand-holding-usd"></i></a>
             </div>`;
+            
+            dropdown = ` <a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data[index].id_pengiriman+`" data-toggle="modal">Detail</a>
+                        <a class="dropdown-item btnEditPengiriman" href="#editPengiriman" data-toggle="modal" data-id="`+data[index].id_pengiriman+`">Edit</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data[index].id_pengiriman+`">Hapus</a>`
+
+            total = ``;
+
+            arsip = ``;
         }
 
         html += `
@@ -69,17 +87,13 @@ function createTable(data,sno){
                 
                     `+status+`
                     <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        <a class="dropdown-toggle" href="javascript:void(0)" role="button" id="dropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                             <div class="dropdown-header">Pengiriman</div>
-                            <a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data[index].id_pengiriman+`" data-toggle="modal">Detail</a>
-                            <a class="dropdown-item btnEditPengiriman" href="#editPengiriman" data-toggle="modal" data-id="`+data[index].id_pengiriman+`">Edit</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data[index].id_pengiriman+`">Hapus</a>
+                            `+dropdown+`
                         </div>
                     </div>
                 </div>
@@ -90,7 +104,9 @@ function createTable(data,sno){
                     <p><i class="fa fa-truck mr-3"></i>`+data[index].tgl_pengiriman+`</p>
                     <p><i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>`+data[index].tgl_pengambilan+`</p>
                     <p><i class="fa fa-clock fa-flip-horizontal mr-3"></i>`+data[index].jam_operasional+`</p>
+                    `+total+`
                     `+pengambilan+`
+                    `+arsip+`
                 </div>
             </div>
         </div>`;
@@ -780,3 +796,41 @@ $(document).on("click", "#editPengirimanTambahSimpan", function(){
     })
 })
 // edit pengiriman 
+
+// arsip
+$(document).on("click", ".btnArsip", function(){
+    let id_pengiriman = $(this).data("id");
+
+    Swal.fire({
+        icon: 'question',
+        text: 'Yakin akan mengarsipkan data pengiriman ini?',
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak'
+    }).then(function (result) {
+        if (result.value) {
+            data = {id_pengiriman: id_pengiriman}
+            let result = ajax(url_base+"pengambilan/add_arsip", "POST", data);
+
+            if(result == 1){
+                // reload_data();
+                loadPagination(page)
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    text: 'Berhasil mengarsipkan data pengiriman',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'terjadi kesalahan, gagal mengarsipkan data pengiriman'
+                })
+            }
+        }
+    })
+})

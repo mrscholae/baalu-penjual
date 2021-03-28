@@ -52,6 +52,8 @@ function list_kecamatan(){
     }
     
     html += `<option value="Lainnya">Lainnya</option>`;
+    $("#addPelanggan select[name='kecamatan']").html(html);
+    $("#editPelanggan select[name='kecamatan']").html(html);
     $("#kecamatan_add").html(html);
     $("#kecamatan_edit").html(html);
 }

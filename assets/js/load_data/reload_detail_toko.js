@@ -11,8 +11,10 @@ function reload_data(){
         
         if(result.toko.pengiriman == 0){
             reload = "";
+            best_seller = "";
         } else {
             reload = `<a href="#addPengiriman" data-toggle="modal" class="btn btn-circle btn-success mr-1 addPengirimanUlang" data-id="`+result.toko.id_toko+`|`+result.toko.nama_toko+`"><i class="fa fa-redo-alt"></i></a>`;
+            best_seller = `<a href="#rekapPenjualan" data-toggle="modal" class="btn btn-circle btn-warning mr-1 rekapPenjualan" data-id="`+result.toko.id_toko+`|`+result.toko.nama_toko+`"><i class="fa fa-star"></i></a>`;
         }
 
         html += `
@@ -44,6 +46,7 @@ function reload_data(){
                             <div class="d-flex justify-content-center mt-1">
                                 <a href="#addPengiriman" data-toggle="modal" class="btn btn-circle btn-success mr-1 addPengiriman" data-id="`+result.toko.id_toko+`|`+result.toko.nama_toko+`"><i class="fa fa-truck"></i></a>
                                 `+reload+`
+                                `+best_seller+`
                             </div>
                         </div>
                     </div>
@@ -63,6 +66,8 @@ function reload_data(){
                     pengambilan = ``;
 
                     dropdown = `<a class="dropdown-item btnDetailPengiriman" href="#detailPengiriman" data-id="`+data.id_pengiriman+`" data-toggle="modal">Detail</a>`;
+
+                    total = `<p><i class="fa fa-hand-holding-usd mr-3 text-success"></i>`+data.total+`</p>`;
                 } else {
                     status = `
                     <div class="list-group-item-warning card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -77,7 +82,10 @@ function reload_data(){
                         <a class="dropdown-item btnEditPengiriman" href="#editPengiriman" data-toggle="modal" data-id="`+data.id_pengiriman+`">Edit</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item bthHapusPengiriman" href="javascript:void(0)" data-id="`+data.id_pengiriman+`">Hapus</a>`
+
+                    total = ``;
                 }
+                
                 html += `<div class="col-12 col-md-4">
                     <div class="card shadow mb-4">
                         
@@ -99,6 +107,7 @@ function reload_data(){
                             <p><i class="fa fa-truck mr-3"></i>`+data.tgl_pengiriman+`</p>
                             <p><i class="fa fa-truck-pickup fa-flip-horizontal mr-3"></i>`+data.tgl_pengambilan+`</p>
                             <p><i class="fa fa-clock fa-flip-horizontal mr-3"></i>`+data.jam_operasional+`</p>
+                            `+total+`
                             `+pengambilan+`
                         </div>
                     </div>
